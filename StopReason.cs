@@ -111,7 +111,7 @@ namespace TireManufacturing
                     //    //string d = dataTable.Rows[0][0].ToString();
                     //    //stopReasonClass.TimeStartStop = (DateTime.Parse(d)).ToString("HHmm");
                     //}
-                    if (stopReasonClass.WorkCenter == "0")//אם לחץ סיבת עצירה אבל לא עשה שקילה לא יהיה מרכז עבודה ולכן נשלוף באופן יזום
+                    if (stopReasonClass.WorkCenter == "0")//אם לחץ סיבת עצירה אבל לא עשה שקילה לא יהיה מרכז עבודה ולכן נשלוף באופן יזוםכ
                     {
                         qry = $@"LWRKC as WorkCenter
                          FROM TAPIALI.LABELP
