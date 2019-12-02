@@ -111,7 +111,18 @@ namespace TireManufacturing
                     //    //string d = dataTable.Rows[0][0].ToString();
                     //    //stopReasonClass.TimeStartStop = (DateTime.Parse(d)).ToString("HHmm");
                     //}
-           
+                    if (stopReasonClass.WorkCenter == "0")//אם לחץ סיבת עצירה אבל לא עשה שקילה לא יהיה מרכז עבודה ולכן נשלוף באופן יזום
+                    {
+                        qry = $@"LWRKC as WorkCenter
+                         FROM TAPIALI.LABELP
+                         Where LPROD = '{stopReasonClass.CatalogNum}' ";
+                        DataTable data = new DataTable();
+                        data = DBS.executeSelectQueryNoParam(qry);
+                        if (data.Rows.Count == 1)
+                        {
+                            stopReasonClass.WorkCenter = data.Rows[0]["WorkCenter"].ToString();
+                        }
+                    }
                     qry = $@"INSERT into RZPALI.STOPP values({DateTime.Now.ToString("1yyMMdd")},{stopReasonClass.DepratmentId},'000{stopReasonClass.EmployeeId}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','TAK-{stopReasonClass.DepratmentId}{int.Parse(CodeForStopp).ToString("00")}','{stopReasonClass.Shift}',{stopReasonClass.TimeStartStop},{DateTime.Now.ToString("HHmm")},0,'{stopReasonClass.CatalogNum}',0,
                             {stopReasonClass.WorkCenter},0,0,'','','','',0,0,'{DateTime.Now.ToString("HHmmssddmmyy")}','C#','{System.Environment.MachineName}',{Numerator})";
                     LogWaveClass.LogWave("מכניס לטבלת עצירות " + qry);
