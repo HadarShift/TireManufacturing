@@ -149,7 +149,7 @@ namespace TireManufacturing
             }
             //שליפת נתונים ממפרט-עץ מוצר
             //query =
-                //טוב לשלב א
+            //טוב לשלב א
             //$@"SELECT distinct F.BPROD, G.BCHLD as GreenNum, C.BCHLD as CaracasNum, round(W.ICSCP1* 2.2046, 2  ) as WeightCarcas,round(W.ICSCP1, 2)as WeightCarcasKg
             //   FROM BPCSFV30.IIMl01 A join BPCSFV30.MBML01 F on IPROD=F.BPROD 
             //   left join BPCSFV30.MBML01 G on F.BPROD=G.BPROD and (G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
@@ -159,7 +159,7 @@ namespace TireManufacturing
             //   WHERE substr(A.IPROD,1,8)='{CatalogNumber8}' and substr(A.IDRAW,7,15)='{Specification}' and F.BID='BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE={DateTime.Now.ToString("1yyMMdd")} ";
             //שונה ב26.11
             //טוב לשלב ב
-                query = $@"SELECT distinct F.BPROD, G.BCHLD as GreenNum, C.BCHLD as CaracasNum, round(W.ICSCP1 * 2.2046, 2) as WeightCarcas,round(W.ICSCP1, 2) as WeightCarcasKg
+            query = $@"SELECT distinct F.BPROD, G.BCHLD as GreenNum, C.BCHLD as CaracasNum, round(W.ICSCP1 * 2.2046, 2) as WeightCarcas,round(W.ICSCP1, 2) as WeightCarcasKg
                    FROM BPCSFV30.IIMl01 A join BPCSFV30.MBML01 F on IPROD = F.BPROD
                    left join BPCSFV30.MBML01 G on F.BPROD = G.BPROD and(G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
                    left join BPCSFV30.MBML01 C on G.BCHLD = C.BPROD and C.BCLAC = 'L'
