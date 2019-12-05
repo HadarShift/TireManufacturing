@@ -19,7 +19,7 @@ namespace TireManufacturing
         public int CatalogNumber8 { get; set; }// 8 מק"ט
         public string FatherProduct { get; set; }//מק"ט תוצרת גמורה-AL-פריט אב
         public string CaracasCatalogNum { get; set; }//מק"ט קרקס -100
-        public string TireCatalogNum { get; set; }//000-מק"ט צמיג ירוק
+        public string GreenCatalogNum { get; set; }//000-מק"ט צמיג ירוק
         public int Model { get; set; }//דגם תבנית
         public double TireWeight { get; set; }//משקל צמיג ירוק
         public double CarcasWeight { get; set; }//משקל כרכס בליברות
@@ -132,7 +132,7 @@ namespace TireManufacturing
         /// בודק תקינות מפרט ושליפת מק"טים
        ///מעץ מוצר
             /// </summary>
-        public void CheckSpecificationAndGetCatalog(string Specification)
+        public void CheckSpecificationAndGetCatalog(string Specification,string WhichCase,int Shift)
         {
             DBService DBS = new DBService();
             DataTable dataTable = new DataTable();
@@ -148,26 +148,42 @@ namespace TireManufacturing
                 return;
             }
             //שליפת נתונים ממפרט-עץ מוצר
-            //query =
-            //טוב לשלב א
-            //$@"SELECT distinct F.BPROD, G.BCHLD as GreenNum, C.BCHLD as CaracasNum, round(W.ICSCP1* 2.2046, 2  ) as WeightCarcas,round(W.ICSCP1, 2)as WeightCarcasKg
-            //   FROM BPCSFV30.IIMl01 A join BPCSFV30.MBML01 F on IPROD=F.BPROD 
-            //   left join BPCSFV30.MBML01 G on F.BPROD=G.BPROD and (G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
-            //   left join BPCSFV30.MBML01 C on G.BCHLD=C.BPROD and C.BCLAC ='L'
-            //   left join BPCSFV30.cicl01 W on trim(C.BCHLD)=trim(W.ICPROD)
-            //   left join  rzpali.mcovip M on W.ICPROD=M.OPRIT and M.OMACH='{MachineID}'       
-            //   WHERE substr(A.IPROD,1,8)='{CatalogNumber8}' and substr(A.IDRAW,7,15)='{Specification}' and F.BID='BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE={DateTime.Now.ToString("1yyMMdd")} ";
-            //שונה ב26.11
-            //טוב לשלב ב
-            query = $@"SELECT distinct F.BPROD, G.BCHLD as GreenNum, C.BCHLD as CaracasNum, round(W.ICSCP1 * 2.2046, 2) as WeightCarcas,round(W.ICSCP1, 2) as WeightCarcasKg
-                   FROM BPCSFV30.IIMl01 A join BPCSFV30.MBML01 F on IPROD = F.BPROD
-                   left join BPCSFV30.MBML01 G on F.BPROD = G.BPROD and(G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
-                   left join BPCSFV30.MBML01 C on G.BCHLD = C.BPROD and C.BCLAC = 'L'
-                   left join BPCSFV30.cicl01 W on trim(G.BCHLD)=trim(W.ICPROD)
-                   left join  rzpali.mcovip M on W.ICPROD = M.OPRIT and M.OMACH = '{MachineID}'
-                   WHERE substr(A.IPROD,1,8)= '{CatalogNumber8}' and substr(A.IDRAW,7,15)= '{Specification}' and F.BID = 'BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE ={DateTime.Now.ToString("1yyMMdd")} ";
+            if(WhichCase=="שלב א")
+            {
+                query =
+           //טוב לשלב א
+           $@"SELECT distinct  G.BCHLD as GreenCatalogNum, C.BCHLD as CaracasCatalogNum, round(W.ICSCP1* 2.2046, 2  ) as WeightLevelLibrot,round(W.ICSCP1* 2.2046, 2  ) as WeightCaracasLibrot,round(W.ICSCP1, 2)as WeightCarcasKg
+               FROM BPCSFV30.IIMl01 A join BPCSFV30.MBML01 F on IPROD=F.BPROD 
+               left join BPCSFV30.MBML01 G on F.BPROD=G.BPROD and (G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
+               left join BPCSFV30.MBML01 C on G.BCHLD=C.BPROD and C.BCLAC ='L'
+               left join BPCSFV30.cicl01 W on trim(C.BCHLD)=trim(W.ICPROD)
+               left join  rzpali.mcovip M on W.ICPROD=M.OPRIT and M.OMACH='{MachineID}'       
+               WHERE substr(A.IPROD,1,8)='{CatalogNumber8}' and substr(A.IDRAW,7,15)='{Specification}' and F.BID='BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE={DateTime.Now.ToString("1yyMMdd")} ";
+            }
+           
+            ////שונה ב26.11
+            ////טוב לשלב ב
+            ////query = $@"SELECT distinct F.BPROD, G.BCHLD as GreenNum, C.BCHLD as CaracasNum, round(W.ICSCP1 * 2.2046, 2) as WeightCarcas,round(W.ICSCP1, 2) as WeightCarcasKg
+            ////       FROM BPCSFV30.IIMl01 A join BPCSFV30.MBML01 F on IPROD = F.BPROD
+            ////       left join BPCSFV30.MBML01 G on F.BPROD = G.BPROD and(G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
+            ////       left join BPCSFV30.MBML01 C on G.BCHLD = C.BPROD and C.BCLAC = 'L'
+            ////       left join BPCSFV30.cicl01 W on trim(G.BCHLD)=trim(W.ICPROD)
+            ////       left join  rzpali.mcovip M on W.ICPROD = M.OPRIT and M.OMACH = '{MachineID}'
+            ////       WHERE substr(A.IPROD,1,8)= '{CatalogNumber8}' and substr(A.IDRAW,7,15)= '{Specification}' and F.BID = 'BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE ={DateTime.Now.ToString("1yyMMdd")} ";
+            else
+            {
+                query = $@"SELECT distinct OPRIT as GreenCatalogNum, BCHLD as CaracasCatalogNum, round(G.ICSCP1* 2.2046, 2  ) as WeightLevelLibrot,round(C.ICSCP1* 2.2046, 2  ) as WeightCaracasLibrot,round(C.ICSCP1, 2)as WeightCarcasKg
+               FROM rzpali.mcovip 
+               left join BPCSFV30.MBML01   on OPRIT=BPROD and BCLAC ='L'
+               left join BPCSFV30.cicl01 G on OPRIT=G.ICPROD and G.ICFAC = 'F1'
+               left join BPCSFV30.cicl01 C on BCHLD=C.ICPROD and C.ICFAC = 'F1'
+	           left join BPCSFV30.IIMl01 A on oprit=iprod
+               WHERE OMACH = '{MachineID}' and substr(OPRIT,1,8)= '{CatalogNumber8}'  and substr(A.IDRAW,7,15)='{Specification}' and odate={DateTime.Now.ToString("1yyMMdd")} and oshift='{Shift}' and bchld is not null ";
+            }
+           
+      
+            
             LogWaveClass.LogWave("שליפת נתונים מפרט מעץ מוצר " + query);
-
             dataTable = DBS.executeSelectQueryNoParam(query);
             if (dataTable is null )
             {
@@ -176,20 +192,14 @@ namespace TireManufacturing
             }
             else if (dataTable.Rows.Count >= 1)
             {
-                //for (int i = 0; i < dataTable.Rows.Count; i++)
-                //{
-                //    if (dataTable.Rows[0]["GreenNum"].ToString().Trim()!=dataTable.Rows[i]["GreenNum"].ToString())//רק אם מספרים קטלוגים שונים המפרט לא תקין.יכול להיות  מפרט עם שתי רשומות שמכילות אותו מקט
-                //    {
-                //        MessageBox.Show("מפרט לא תקין,נא לפנות לתפי");
-                //        return;
-                //    }
-                //}
-                FatherProduct = dataTable.Rows[0]["BPROD"].ToString();
-                TireCatalogNum = dataTable.Rows[0]["GreenNum"].ToString();
-                CaracasCatalogNum = dataTable.Rows[0]["CaracasNum"].ToString();
-                if (!string.IsNullOrEmpty(dataTable.Rows[0]["WeightCarcas"].ToString() as string))
+
+                //FatherProduct = dataTable.Rows[0]["BPROD"].ToString();
+                FatherProduct = "";
+                GreenCatalogNum = dataTable.Rows[0]["GreenCatalogNum"].ToString();
+                CaracasCatalogNum = dataTable.Rows[0]["CaracasCatalogNum"].ToString();
+                if (!string.IsNullOrEmpty(dataTable.Rows[0]["WeightCaracasLibrot"].ToString() as string))
                 {
-                    CarcasWeight = double.Parse(dataTable.Rows[0]["WeightCarcas"].ToString());//משקל קרקס
+                    CarcasWeight = double.Parse(dataTable.Rows[0]["WeightCaracasLibrot"].ToString());//משקל קרקס
                     CarcasWeightKg = double.Parse(dataTable.Rows[0]["WeightCarcasKg"].ToString());
                 }
             }

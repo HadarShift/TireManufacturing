@@ -113,9 +113,9 @@ namespace TireManufacturing
                     //}
                     if (stopReasonClass.WorkCenter == "0")//אם לחץ סיבת עצירה אבל לא עשה שקילה לא יהיה מרכז עבודה ולכן נשלוף באופן יזוםכ
                     {
-                        qry = $@"LWRKC as WorkCenter
-                         FROM TAPIALI.LABELP
-                         Where LPROD = '{stopReasonClass.CatalogNum}' ";
+                        qry = $@"select RWRKC as WorkCenter
+                         FROM bpcsfv30.frtl01 
+                         Where RPROD = '{stopReasonClass.CatalogNum}' ";
                         DataTable data = new DataTable();
                         data = DBS.executeSelectQueryNoParam(qry);
                         if (data.Rows.Count == 1)

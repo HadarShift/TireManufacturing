@@ -84,7 +84,7 @@ namespace TireManufacturing
             if (Cbo_Level.Items.Count == 1) Cbo_Level.SelectedIndex = 0;//אם יש רק אופצייה אחת במכונה היא תופיע דיפולטיבית
             //VisibleWeightFields();
         }
-
+        
 
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace TireManufacturing
                     actualTire.TireNumber = workPlan.HowManyReady + 1;//איזה צמיג כרגע בסדרת ייצור
 
                     tireSpecifications.GetSpecificationBaseData(SubstringsSpecifications);//מקבל את נתוני המפרט 
-                    tireSpecifications.CheckSpecificationAndGetCatalog(str);//בודק את תקינות המפרט
+                    tireSpecifications.CheckSpecificationAndGetCatalog(str, Cbo_Level.SelectedItem.ToString(),workPlan.Shift);//בודק את תקינות המפרט
                     LogWaveClass.LogWave("סיים קבלת ובדיקת מפרט");
 
                     ///בדיקה שלא עובר את מקסימום ראש שקילה שניתן להכיל,והכנסת מקט רלוונטי בהתאם לשלב העבודה
@@ -188,7 +188,7 @@ namespace TireManufacturing
                             break;
 
                         case "שלב ב":
-                            tireSpecifications.CatalogNumberUsedNow = tireSpecifications.TireCatalogNum;
+                            tireSpecifications.CatalogNumberUsedNow = tireSpecifications.GreenCatalogNum;
                             if (tireSpecifications.WeightLevelB/2.2046 > machine.MaxWeightingCap)
                             {
                                 MessageBox.Show("משקל קרקס גדול מקיבולת ראש המשקל", "הודעת שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
@@ -197,7 +197,7 @@ namespace TireManufacturing
                             break;
 
                         case "צמיג מלא":
-                            tireSpecifications.CatalogNumberUsedNow = tireSpecifications.TireCatalogNum;
+                            tireSpecifications.CatalogNumberUsedNow = tireSpecifications.GreenCatalogNum;
                             if (tireSpecifications.TireWeight / 2.2046 > machine.MaxWeightingCap)
                             {
                                 MessageBox.Show("משקל קרקס גדול מקיבולת ראש המשקל", "הודעת שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
