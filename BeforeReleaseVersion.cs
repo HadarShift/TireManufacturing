@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace TireManufacturing
 {
     public partial class BeforeReleaseVersion : Form
     {
-        int Couner = 180;//3 min
+        int Couner = 30;//3 min
         public BeforeReleaseVersion()
         {
             InitializeComponent();
@@ -29,6 +30,8 @@ namespace TireManufacturing
             if (Couner == 0)
             {
                 timer1.Stop();
+                LogWaveClass.LogWave("נסגרה תוכנית מסיבת עדכון גרסה");
+                Process.GetCurrentProcess().Kill();
                 Application.Exit();
             }
             TimeSpan time = TimeSpan.FromSeconds(Couner);

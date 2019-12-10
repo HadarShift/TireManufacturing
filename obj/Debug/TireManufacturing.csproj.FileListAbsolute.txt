@@ -14,3 +14,4 @@ C:\c#\Hshiftan-tire_manufacturing-6b2e5729f261\TireManufacturing\obj\Debug\TireM
 C:\c#\Hshiftan-tire_manufacturing-6b2e5729f261\TireManufacturing\obj\Debug\TireManufacturing.csproj.CoreCompileInputs.cache
 C:\c#\Hshiftan-tire_manufacturing-6b2e5729f261\TireManufacturing\obj\Debug\TireManufacturing.exe
 C:\c#\Hshiftan-tire_manufacturing-6b2e5729f261\TireManufacturing\obj\Debug\TireManufacturing.pdb
+C:\c#\Hshiftan-tire_manufacturing-6b2e5729f261\TireManufacturing\obj\Debug\TireManufacturing.csprojAssemblyReference.cache

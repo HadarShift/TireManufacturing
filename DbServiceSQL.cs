@@ -20,7 +20,7 @@ public class DbServiceSQL
     //OleDbConnection conn = new OleDbConnection("Driver={SQL Server Native Client 11.0};Server=ALSQL\\ALLIANCE;Database=Production;Uid=albi;Pwd=Al5342");
     //SqlConnection conn = new SqlConnection("Provider=SQLNCLI11;Server=ALSQL\\ALLIANCE;Database=Production;Uid=albi;Pwd=Al5342");
     OleDbConnection conn = new OleDbConnection("Provider=SQLNCLI11;Server=ALFSQL;Database=PRODUCTION;Trusted_Connection = yes;Uid=albi;Pwd=Al5342");
-
+    
     OleDbDataAdapter adp;
     public bool transactional = false;
 

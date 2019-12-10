@@ -71,7 +71,7 @@ namespace TireManufacturing
 
             //עדכון לקובץ STT
             //קובץ שמחזיק רשומה אחת עבור כל מכונה ומעדכנים את המצב שלה-בעצירה או בהמשך
-            qry = $@"UPDATE RZPALI.HMIBMACSTT set STIMESTAMP='{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}',SEMP='{stopReasonClass.EmployeeId}',STAK='{CodeStop}',SUSER='{System.Environment.MachineName}' 
+            qry = $@"UPDATE RZPADALI.HMIBMACSTT set STIMESTAMP='{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}',SEMP='{stopReasonClass.EmployeeId}',STAK='{CodeStop}',SUSER='{System.Environment.MachineName}' 
                    WHERE SDEPT={stopReasonClass.DepratmentId} and SMACHINE='{stopReasonClass.MachineID}'";
             LogWaveClass.LogWave(qry);
             DBS.executeInsertQuery(qry);
@@ -79,7 +79,7 @@ namespace TireManufacturing
             if (CodeStop != "95")//אם באמת הוכנסה תקלה שהיא לא קוד תקלה 95 של סיום תקלה
             {
                     //הכנסה לקובץ לוג עצירות-קובץ תיעוד של כל היסטוריית העצירות
-                    qry = $@"INSERT into RZPALI.HMIBMACLOG values('{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','{stopReasonClass.MachineID}','4','{stopReasonClass.EmployeeId}','{CodeStop}','{stopReasonClass.CatalogNum}',0,'{stopReasonClass.MachineID}')";
+                    qry = $@"INSERT into RZPADALI.HMIBMACLOG values('{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','{stopReasonClass.MachineID}','4','{stopReasonClass.EmployeeId}','{CodeStop}','{stopReasonClass.CatalogNum}',0,'{stopReasonClass.MachineID}')";
                     LogWaveClass.LogWave("מכניס לקובץ תקלות לוג " + qry);
 
                     DBS.executeInsertQuery(qry);
@@ -93,18 +93,18 @@ namespace TireManufacturing
                 if (ExistStop)//רק אם יש באמת קוד תקלה אז נדווח עצירה בקובץ STOPP
                 {
                     qry = $@"SELECT STVLNM
-                             FROM RZPALI.STVLP";
+                             FROM RZPADALI.STVLP";
                     DataTable dataTable = new DataTable();
                     dataTable = DBS.executeSelectQueryNoParam(qry);
                     if (dataTable.Rows.Count != 0)
                         Numerator = (double.Parse(dataTable.Rows[0][0].ToString())+1).ToString();
-                    qry = $@"UPDATE RZPALI.STVLP set STVLNM={Numerator}";
+                    qry = $@"UPDATE RZPADALI.STVLP set STVLNM={Numerator}";
                     DBS.executeInsertQuery(qry);
                     //דיווח סיום תקלה בקובץ STOPP 
                     //if (stopReasonClass.TimeStartStop == null)//אם לא שמור זמן תחילת תקלה אצלנו נפנה לדטה בייס-יכול להיות שהתקלה נפתחה מאפליקציה אחרת
                     //{
                     //    //qry = $@"select  SUBSTR(CHAR(STIMESTAMP), 12, 2) Concat ':' Concat SUBSTR(CHAR(STIMESTAMP), 15, 2)  as TIME
-                    //    //        from RZPALI.HMIBMACSTT 
+                    //    //        from RZPADALI.HMIBMACSTT 
                     //    //        where SMACHINE ='{stopReasonClass.MachineID}' and SDEPT='{stopReasonClass.DepratmentId}'";
                     //    //dataTable = new DataTable();
                     //    //dataTable = DBS.executeSelectQueryNoParam(qry);
@@ -123,7 +123,7 @@ namespace TireManufacturing
                             stopReasonClass.WorkCenter = data.Rows[0]["WorkCenter"].ToString();
                         }
                     }
-                    qry = $@"INSERT into RZPALI.STOPP values({DateTime.Now.ToString("1yyMMdd")},{stopReasonClass.DepratmentId},'000{stopReasonClass.EmployeeId}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','TAK-{stopReasonClass.DepratmentId}{int.Parse(CodeForStopp).ToString("00")}','{stopReasonClass.Shift}',{stopReasonClass.TimeStartStop},{DateTime.Now.ToString("HHmm")},0,'{stopReasonClass.CatalogNum}',0,
+                    qry = $@"INSERT into RZPADALI.STOPP values({DateTime.Now.ToString("1yyMMdd")},{stopReasonClass.DepratmentId},'000{stopReasonClass.EmployeeId}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','TAK-{stopReasonClass.DepratmentId}{int.Parse(CodeForStopp).ToString("00")}','{stopReasonClass.Shift}',{stopReasonClass.TimeStartStop},{DateTime.Now.ToString("HHmm")},0,'{stopReasonClass.CatalogNum}',0,
                             {stopReasonClass.WorkCenter},0,0,'','','','',0,0,'{DateTime.Now.ToString("HHmmssddmmyy")}','C#','{System.Environment.MachineName}',{Numerator})";
                     LogWaveClass.LogWave("מכניס לטבלת עצירות " + qry);
                     DBS.executeInsertQuery(qry);
@@ -139,7 +139,7 @@ namespace TireManufacturing
         public void CheckIFStopExist()
         {
             string qry = $@"SELECT *
-                          FROM RZPALI.HMIBMACSTT 
+                          FROM RZPADALI.HMIBMACSTT 
                           WHERE SDEPT={stopReasonClass.DepratmentId} and SMACHINE='{stopReasonClass.MachineID}' and STAK<>95";//95 -סיום העצירה
             LogWaveClass.LogWave("בדיקה אם קיימת סיבת עצירה "+qry);
             DataTable dataTable = new DataTable();
@@ -157,7 +157,7 @@ namespace TireManufacturing
                 DescriptionStop = DescriptionStopI.Trim();
                 //אם לא שמור זמן תחילת תקלה אצלנו נפנה לדטה בייס-יכול להיות שהתקלה נפתחה מאפליקציה אחרת או התוכנית נסגרה
                 qry = $@"select  SUBSTR(CHAR(STIMESTAMP), 12, 2) Concat ':' Concat SUBSTR(CHAR(STIMESTAMP), 15, 2)  as TIME
-                                from RZPALI.HMIBMACSTT 
+                                from RZPADALI.HMIBMACSTT 
                                 where SMACHINE ='{stopReasonClass.MachineID}' and SDEPT='{stopReasonClass.DepratmentId}'";
                 LogWaveClass.LogWave(qry);
                 dataTable = new DataTable();

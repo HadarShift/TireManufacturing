@@ -64,7 +64,7 @@ namespace TireManufacturing
             string query =
                 $@"SELECT MF2RTH, INSIZ, MFPRD, MFTVDG, MFWT, MFSTT, MFDPT, MFTOFW, INPR, MFUSER, MFCSCD, MFTSHA, MF2RNG , MRKOD, ZMUSCD, MFCDO1, XTMIXD, WOSDADD1 as emailEng ,MFKOD5||MFTST as Test
                    FROM MFRT.MFRTP 
-                   LEFT JOIN BPCSFALI.IIMNL01 ON INPROD = MFPRD 
+                   LEFT JOIN BPCSDALI.IIMNL01 ON INPROD = MFPRD 
                    LEFT JOIN MFRT.MFRTVP ON MFSZ = MRSZ AND MFNO = MRNO and MFVRN = MRVRN 
                    LEFT JOIN MFRT.ZMFRTP ON ZMCODE = MFCDO1 
                    LEFT JOIN MFRT.XTRUP ON XTCODE = MRKOD 
@@ -157,7 +157,7 @@ namespace TireManufacturing
                left join BPCSFV30.MBML01 G on F.BPROD=G.BPROD and (G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
                left join BPCSFV30.MBML01 C on G.BCHLD=C.BPROD and C.BCLAC ='L'
                left join BPCSFV30.cicl01 W on trim(C.BCHLD)=trim(W.ICPROD)
-               left join  rzpali.mcovip M on W.ICPROD=M.OPRIT and M.OMACH='{MachineID}'       
+               left join  RZPADALI.mcovip M on W.ICPROD=M.OPRIT and M.OMACH='{MachineID}'       
                WHERE substr(A.IPROD,1,8)='{CatalogNumber8}' and substr(A.IDRAW,7,15)='{Specification}' and F.BID='BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE={DateTime.Now.ToString("1yyMMdd")} ";
             }
            
@@ -168,12 +168,12 @@ namespace TireManufacturing
             ////       left join BPCSFV30.MBML01 G on F.BPROD = G.BPROD and(G.BCLAC between'N1' and 'N9' or G.BCLAC between'M1' and 'M9')
             ////       left join BPCSFV30.MBML01 C on G.BCHLD = C.BPROD and C.BCLAC = 'L'
             ////       left join BPCSFV30.cicl01 W on trim(G.BCHLD)=trim(W.ICPROD)
-            ////       left join  rzpali.mcovip M on W.ICPROD = M.OPRIT and M.OMACH = '{MachineID}'
+            ////       left join  RZPADALI.mcovip M on W.ICPROD = M.OPRIT and M.OMACH = '{MachineID}'
             ////       WHERE substr(A.IPROD,1,8)= '{CatalogNumber8}' and substr(A.IDRAW,7,15)= '{Specification}' and F.BID = 'BM' and (A.ICLAS between'1D' and '9D' or A.ICLAS between'1R' and '9R') and M.ODATE ={DateTime.Now.ToString("1yyMMdd")} ";
             else
             {
                 query = $@"SELECT distinct OPRIT as GreenCatalogNum, BCHLD as CaracasCatalogNum, round(G.ICSCP1* 2.2046, 2  ) as WeightLevelLibrot,round(C.ICSCP1* 2.2046, 2  ) as WeightCaracasLibrot,round(C.ICSCP1, 2)as WeightCarcasKg
-               FROM rzpali.mcovip 
+               FROM RZPADALI.mcovip 
                left join BPCSFV30.MBML01   on OPRIT=BPROD and BCLAC ='L'
                left join BPCSFV30.cicl01 G on OPRIT=G.ICPROD and G.ICFAC = 'F1'
                left join BPCSFV30.cicl01 C on BCHLD=C.ICPROD and C.ICFAC = 'F1'
@@ -185,7 +185,7 @@ namespace TireManufacturing
             
             LogWaveClass.LogWave("שליפת נתונים מפרט מעץ מוצר " + query);
             dataTable = DBS.executeSelectQueryNoParam(query);
-            if (dataTable is null )
+            if (dataTable is null)
             {
                 MessageBox.Show("מפרט לא תקין,נא לפנות לתפי");
                 return;

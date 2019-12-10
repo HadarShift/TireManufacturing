@@ -123,6 +123,7 @@ namespace TireManufacturing
         /// </summary>
         private void Btn_GetWorkPlan_Click(object sender, EventArgs e)
         {
+            LogWaveClass.LogWave("עובד ריענן סידור עבודה");
             GetWorkPlan();   
         }
 
@@ -376,7 +377,7 @@ namespace TireManufacturing
                 //actualTire.Specifications = CBox_WorkPlan.Text;//הכנסת מפרט לצמיג נוכחי ישמש לבדיקות התוויות
                 //actualTire.Managers = Managers;//הכנסת רשימת מנהלים
                 //actualTire.CatalogNum = CatalogNumNow;
-                workPlan.ConfigureShift();
+                workPlan.ConfigureShift(false);
                 dataTableWorkPlan = workPlan.GetWorkingPlane(true);
                 workPlan.ReadyTires(CBox_WorkPlan.SelectedIndex,CBox_WorkPlan.Text);//בודק איזה צמיג בסדרה עכשיו. אמור להיות פלוס 1 מהסבב הקודם
                 actualTire.TireNumber = workPlan.HowManyReady + 1;//איזה צמיג כרגע בסדרת ייצור
@@ -997,7 +998,7 @@ namespace TireManufacturing
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            Process_Scale(51);
+            Process_Scale(96);
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -1143,7 +1144,7 @@ namespace TireManufacturing
                         LogWaveClass.LogWave("לפני העלאת קאונטר ב1");
                         if (actualTire.DnaMangerConfirm == 0)
                         {
-                            workPlan.AddOneTire();//העלאת קאונטר של צמיג ב1
+                            workPlan.AddOneTire(CBox_WorkPlan.Text);//העלאת קאונטר של צמיג ב1
                             LogWaveClass.LogWave("לפני סבב חדש ואיפוס הקודמים");
                             NewRound();//סבב חדש של שקילות ואיפוס הקודמים                          
                         }
@@ -1315,7 +1316,9 @@ namespace TireManufacturing
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            LogWaveClass.LogWave("תוכנית נסגרה");
+            LogWaveClass.LogWave("תוכנית נסגרה1");
+
+            Process.GetCurrentProcess().Kill();
             Application.Exit();
         }
 
@@ -1325,33 +1328,92 @@ namespace TireManufacturing
         /// </summary>
         private void timerConfigureShift_Tick(object sender, EventArgs e)
         {
-
-            if(DateTime.Now.ToShortTimeString() == "06:30" || DateTime.Now.ToShortTimeString() == "15:00"|| DateTime.Now.ToShortTimeString() == "23:30")
+            try
             {
-                workPlan.GetWorkingPlane(false);
-                workPlan.ReadyTires(CBox_WorkPlan.SelectedIndex, CBox_WorkPlan.Text);//בודק איזה צמיג בסדרה עכשיו. אמור להיות פלוס 1 מהסבב הקודם
-                actualTire.TireNumber = workPlan.HowManyReady + 1;//איזה צמיג כרגע בסדרת ייצור
-            }
-
-            //בדיקה אם רוצים לעדכן גרסה-אם כן יסגור תוך דקות את התוכנית
-            if (!beforeReleaseVersionExist)//רק אם לא פתוח חלון התראת סגירת תוכנית
-            {
-                DbServiceSQL DBnewVesion = new DbServiceSQL();
-                DataTable dataTable = new DataTable();
-                var Name = typeof(Form1).Namespace;
-                string qry = $@"SELECT Change
-                            FROM AppsForUpdate
-                            WHERE Apps='{Name.ToString()}'";
-                dataTable = DBnewVesion.executeSelectQueryNoParam(qry);
-                if (dataTable.Rows[0][0].ToString() == "True")
+                if (DateTime.Now.ToShortTimeString() == "06:30" || DateTime.Now.ToShortTimeString() == "15:00" || DateTime.Now.ToShortTimeString() == "23:30")
                 {
-                    beforeReleaseVersionExist = true;
-                    beforeReleaseVersion.Show();
-                    beforeReleaseVersion.BringToFront();
+                    workPlan.GetWorkingPlane(false);
+                    workPlan.ReadyTires(CBox_WorkPlan.SelectedIndex, CBox_WorkPlan.Text);//בודק איזה צמיג בסדרה עכשיו. אמור להיות פלוס 1 מהסבב הקודם
+                    actualTire.TireNumber = workPlan.HowManyReady + 1;//איזה צמיג כרגע בסדרת ייצור
+                }
+
+                //בדיקה אם רוצים לעדכן גרסה-אם כן יסגור תוך דקות את התוכנית
+                if (!beforeReleaseVersionExist)//רק אם לא פתוח חלון התראת סגירת תוכנית
+                {
+                    DbServiceSQL DBnewVesion = new DbServiceSQL();
+                    DataTable dataTable = new DataTable();
+                    var Name = typeof(Form1).Namespace;
+                    string qry = $@"SELECT Change
+                            FROM AppsForUpdate
+                            WHERE Apps='ContractManagement'";///*{Name.ToString()}*/
+                    dataTable = DBnewVesion.executeSelectQueryNoParam(qry);
+                    if (dataTable.Rows[0][0].ToString() == "True")
+                    {
+                        beforeReleaseVersionExist = true;
+                        beforeReleaseVersion.Show();
+                        beforeReleaseVersion.BringToFront();
+                    }
                 }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                LogWaveClass.LogWave(ex.Message);
+            }
+            
    
 
+        }
+
+        private void Kepwere()
+        {
+            //חיבור לשרת
+            // Kepware.ClientAce.OpcDaClient.DaServerMgt DAserver = new
+            // Kepware.ClientAce.OpcDaClient.DaServerMgt();
+            // Kepware.ClientAce.OpcDaClient.ConnectInfo connectInfo = new
+            //Kepware.ClientAce.OpcDaClient.ConnectInfo();
+            // bool connectFailed;
+            // int activeServerSubscriptionHandle;
+            // int clientSubscriptionHandle;
+            // ItemIdentifier[] itemIdentifiers = new ItemIdentifier[5];
+
+            // הגדרות לחיבור של אובייקטים בשרת(בקר)
+            // // Define the server connection URL
+            //                 string url = "opcda://localhost/Kepware.KEPServerEX.V5/{B3AF0BF6-4C0C-4804-A122-
+            //     6F3B160F4397}";
+
+            //     // Initialize the connect info object data
+            //     connectInfo.LocalId = "en";
+            //     connectInfo.KeepAliveTime = 1000;
+            //     connectInfo.RetryAfterConnectionError = true;
+            //     connectinfo.RetryInitialConnection = false;
+            //     connectInfo.ClientName = "CS Simple Client";
+            //     connectFailed = false;
+            //     ///define a client handle for the connection
+            //     /int clientHandle = 1;
+
+            //
+
+            //נסיון התחברות
+            //Try to connect with the API connect method:
+            //try
+            //{
+            //    DAserver.Connect(url, clientHandle, ref connectInfo, out connectFailed);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Handled Connect exception. Reason: " + ex.Message);
+            //    // Make sure following code knows connection failed:
+            //    connectFailed = true;
+            //}
+            //// Handle result:
+            //if (connectFailed)
+            //{
+            //    // Tell user connection attempt failed:
+            //    MessageBox.Show("Connect failed");
+            //}
+            ////Subscribe to events
+            //SubscribeToOPCDAServerEvents();
         }
 
     }
