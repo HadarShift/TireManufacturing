@@ -10,6 +10,7 @@ namespace TireManufacturing
 {
     class LogWaveClass
     {
+
         public static void LogWave(string LogStr)
         {
             StreamWriter SW;

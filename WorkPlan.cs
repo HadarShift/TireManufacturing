@@ -30,7 +30,6 @@ namespace TireManufacturing
         //שליפת תוכנית עבודה
         DBService DBS = new DBService();
         DataTable dataTableemployee = new DataTable();
-        bool CreatedWorkTicket=false;//האם נפתח כרטיס עבודה לעובד שהמשיך לעבוד אחרי החלפת משמרת על אותו מפרט
         public WorkPlan()
         {
             LogWaveClass.LogWave("יצר אובייקט WORKPLAN");
@@ -63,7 +62,7 @@ namespace TireManufacturing
             {
                 LogWaveClass.LogWave("על איזה צמיג עובדים עכשיו וכמה מתוכננים");
                 DataRow[] dataRows = dataTableemployee.Select($@"IDRAW='{SpecificationChosen}' ");
-                if (dataRows.Count()>0)
+                if (dataRows.Count() > 0)
                 {
                     if (double.Parse(dataRows[0]["OPLAN"].ToString()) < 10)//בדיקה אם מספר דו ספרתי או חד ספרתי
                         HowManyPlanned = int.Parse(dataRows[0]["OPLAN"].ToString().Substring(0, 1));//כמה מתוכננים
@@ -73,6 +72,10 @@ namespace TireManufacturing
                         HowManyReady = int.Parse(dataRows[0]["OMADE"].ToString().Substring(0, 1));//כמה מוכנים
                     else
                         HowManyReady = int.Parse(dataRows[0]["OMADE"].ToString().Substring(0, 2));
+                }
+                else
+                {
+
                 }
        
             }
@@ -145,7 +148,7 @@ namespace TireManufacturing
                     LogWaveClass.LogWave("רשומה חדשה לעובד אחר " + qry);
                     DBS.executeSelectQueryNoParam(qry);
 
-                    CreatedWorkTicket = false;
+                    Form1.CreatedWorkTicket = false;
                     LogWaveClass.LogWave("סיום checkIfTheSameEmployee "+qry);
                 }
             }
@@ -158,13 +161,13 @@ namespace TireManufacturing
         private double checkMovlp()
         {
             string qry = $@"select *
-                          from RZPADALI.movlp";
+                          from RZPALI.movlp";
             LogWaveClass.LogWave("checkmovlp "+qry);
             DataTable dataTableMovlp = new DataTable();
             dataTableMovlp = DBS.executeSelectQueryNoParam(qry);
             double.TryParse(dataTableMovlp.Rows[0]["MOVL1#"].ToString(), out double MovlpIDrecord);
             MovlpIDrecord += 1;
-            qry = $@"UPDATE RZPADALI.movlp set MOVL1#={MovlpIDrecord}";
+            qry = $@"UPDATE RZPALI.movlp set MOVL1#={MovlpIDrecord}";
             LogWaveClass.LogWave(qry);
             DBS.executeInsertQuery(qry);
             return MovlpIDrecord;//מקדם ב1 לזיהוי רשומה
@@ -226,23 +229,35 @@ namespace TireManufacturing
         /// אם אותו עובד ממשיך לעבוד על אותו מפרט אחרי שהתחלפה המשמרת 
         private void AddTireAfterNewShift()
         {
-            string qry = "";
-            if (!CreatedWorkTicket)
+            try
             {
-                int OADIF = CheckOderOADIFfield();//עדיפיות
-                double MovlpIDrecord = checkMovlp();
-                LogWaveClass.LogWave("אותו עובד ממשיך לעבוד על אותו מפרט אחרי שהתחלפה המשמרת");                              
-                 qry = $@"INSERT INTO RZPADALI.MCOVIP values({Date},{DepratmentId},{WorkCenter},'000{EmployeeId}',{DepratmentId},'{MachineID}','{CatalogNum}','{Shift}',0,{OADIF},'',0,'',1,0,{timeStart},0,'',0,0,0,'','','','','',0,0,0,'','',{DateTime.Now.ToString("HHmmss") + DateTime.Now.ToString("ddMMyy")},'{MachineID}-C#','{System.Environment.MachineName}',{MovlpIDrecord})";//oplan=0 omade=1  oplan between shift and oadif omade-.2 fields before timestart
-                LogWaveClass.LogWave("רשומה חדשה לעובד אחר " + qry);
-                DBS.executeSelectQueryNoParam(qry);                                                        
-                CreatedWorkTicket = true;             
+                string qry = $@"SELECT  OVLNUM    as idRecord,oemp as EmpolyeeID,OTIMF as FromHour,OWRKC as WorkCenter ,OPLAN,OMADE
+                          FROM RZPADALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
+                          WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}'  and  right(TRIM(IDRAW),9)='{SpecificationChosen}' and OEMP='000{EmployeeId}";
+                LogWaveClass.LogWave("שליפת כרטיס עבודה " + qry);
+                DataTable dataTableemployee = DBS.executeSelectQueryNoParam(qry);
+                if(dataTableemployee.Rows.Count==0)
+                {
+                    int OADIF = CheckOderOADIFfield();//עדיפיות
+                    double MovlpIDrecord = checkMovlp();
+                    LogWaveClass.LogWave("אותו עובד ממשיך לעבוד על אותו מפרט אחרי שהתחלפה המשמרת");
+                    qry = $@"INSERT INTO RZPALI.MCOVIP values({Date},{DepratmentId},{WorkCenter},'000{EmployeeId}',{DepratmentId},'{MachineID}','{CatalogNum}','{Shift}',0,{OADIF},'',0,'',1,0,{timeStart},0,'',0,0,0,'','','','','',0,0,0,'','',{DateTime.Now.ToString("HHmmss") + DateTime.Now.ToString("ddMMyy")},'{MachineID}-C#','{System.Environment.MachineName}',{MovlpIDrecord+1})";//oplan=0 omade=1  oplan between shift and oadif omade-.2 fields before timestart
+                    LogWaveClass.LogWave("רשומה חדשה לעובד אחר " + qry);
+                    DBS.executeSelectQueryNoParam(qry);
+                    Form1.CreatedWorkTicket = true;
+                }
+                else
+                {
+                    qry = $@"UPDATE RZPADALI.MCOVIP set OMADE=omade+1,OTIMF={timeStart},OTIMT={timeWeighing} 
+                     WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}' and OPRIT='{CatalogNum}'  and oemp='000{EmployeeId}'";
+                    LogWaveClass.LogWave("רשומה חדשה לעובד אחר עדכון" + qry);
+                    DBS.executeSelectQueryNoParam(qry);
+                }
             }
-            else
+             catch(Exception ex)
             {
-                qry = $@"UPDATE RZPADALI.MCOVIP set OMADE=omade+1,OTIMF={timeStart},OTIMT={timeWeighing} 
-                     WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{PreviousShift}' and OPRIT='{CatalogNum}'  and oemp='000{EmployeeId}'";
-                LogWaveClass.LogWave("רשומה חדשה לעובד אחר עדכון" + qry);
-                DBS.executeSelectQueryNoParam(qry);
+                LogWaveClass.LogWave(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
           
         }

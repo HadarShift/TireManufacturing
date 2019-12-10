@@ -32,6 +32,8 @@ namespace TireManufacturing
         ReminderBandages reminderBandages;//הנחת תחבושת אחרי שקילה
         BeforeReleaseVersion beforeReleaseVersion = new BeforeReleaseVersion();//התראה לפני סגירת תוכנית לשם עדכון
         bool beforeReleaseVersionExist=false;//יכול להיות שפתוח כבר החלון
+        //static bool CreatedWorkTicket = false;//האם נפתח כרטיס עבודה לעובד שהמשיך לעבוד אחרי החלפת משמרת על אותו מפרט
+        public static bool CreatedWorkTicket { get; set; }//האם נפתח כרטיס עבודה לעובד שהמשיך לעבוד אחרי החלפת משמרת על אותו מפרט
         public Form1()
         {
   
@@ -57,7 +59,7 @@ namespace TireManufacturing
                     Btn_StopReason.Text = stopReason.DescriptionStop;
                     Btn_StopReason.BackColor = Color.OrangeRed;
                 }
-
+                CreatedWorkTicket = false;
             }
 
             catch (Exception ex)
@@ -998,7 +1000,7 @@ namespace TireManufacturing
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            Process_Scale(96);
+            Process_Scale(169);
         }
         private void button1_Click(object sender, EventArgs e)
         {
