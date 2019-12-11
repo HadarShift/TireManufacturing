@@ -44,7 +44,7 @@ namespace TireManufacturing
             ConfigureShift(false);//הגדרת משמרת 
             string query =
                 $@"SELECT right(TRIM(IDRAW),9) AS IDRAW,  SUM(OPLAN) AS OPLAN, SUM(OMADE) AS OMADE,substring(ICLAS,1,1) as Class
-                   FROM  RZPADALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
+                   FROM  RZPALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
                    WHERE ODATE={Date} AND OMACH = '{this.MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = {Shift} 
                    GROUP BY OPRIT, IDRAW,ICLAS";//מפרט,מק"ט,כמה מתוכנן,כמה בוצע , TRIM(IDRAW) AS IDRAW, TRIM(OPRIT) AS OPRIT, SUM(OPLAN) AS OPLAN, SUM(OMADE) AS OMADE שדות נוספים אם תצטרך
             LogWaveClass.LogWave("קבלת תוכנית עבודה: " + query);
@@ -96,7 +96,7 @@ namespace TireManufacturing
             //תמיד תהיה רשומה עם תכנון עבודה שמנהלי משמרת יוצרים עם שיבוץ עובד. על הרשומה הזאת יתבצע עדכון של כמות צמיגים שעשה
             //אם עובד יתחלף תהיה רשומה חדשה עם כמות מתוכננת פחות הכמות שעשה הקודם
             string qry = $@"SELECT  OVLNUM    as idRecord,oemp as EmpolyeeID,OTIMF as FromHour,OWRKC as WorkCenter ,OPLAN,OMADE
-                          FROM RZPADALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
+                          FROM RZPALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
                           WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}'  and  right(TRIM(IDRAW),9)='{SpecificationChosen}'";
             LogWaveClass.LogWave("שליפת כרטיס עבודה " + qry);
             DataTable dataTableemployee = DBS.executeSelectQueryNoParam(qry);
@@ -125,7 +125,7 @@ namespace TireManufacturing
                 //אם יש רשומה שמספר עובד שלה 0 נעשה רק עדכון של מספר עובד
                 if (EmployeeNumbers.Contains(0))
                 {
-                    qry = $@"UPDATE RZPADALI.MCOVIP set oemp='000{EmployeeId}'
+                    qry = $@"UPDATE RZPALI.MCOVIP set oemp='000{EmployeeId}'
                            WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}' and OPRIT='{CatalogNum}'  and oemp=''";//and  right(TRIM(IDRAW),9)  ='{SpecificationChosen}'
                     LogWaveClass.LogWave("עדכון מספר עובד אם לא רשום בכלל" + qry);
                     DBS.executeInsertQuery(qry);
@@ -139,12 +139,12 @@ namespace TireManufacturing
                     if (Oplan < 0) Oplan = 0;
                     Omade = double.Parse(dataTableemployee.Rows[0]["omade"].ToString());
                     //סיום רשומת עובד אחרון בכרטיס העבודה-שדה כמות תוכננה שווה לשדה כמות שבוצעה
-                    qry= $@"UPDATE RZPADALI.MCOVIP set oplan={Omade}
+                    qry= $@"UPDATE RZPALI.MCOVIP set oplan={Omade}
                            WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}' and OPRIT='{CatalogNum}' and oemp='000{EmployeeNumbers[0]}'";
                     LogWaveClass.LogWave("סיום רשומת עובד אחרון בכרטיס העבודה " + qry);
                     DBS.executeInsertQuery(qry);
                     //רשומה חדשה לעובד אחר במספר עובד אני רושם 0,אחרי שקילת צמיג ראשונה אני מעדכן מספר עובד במחלקת actualtire
-                    qry = $@"INSERT INTO RZPADALI.MCOVIP values({Date},{DepratmentId},{WorkCenter},'000{EmployeeId}',{DepratmentId},'{MachineID}','{CatalogNum}','{Shift}',{Oplan},{OADIF},'',0,'',0,0,{timeStart},0,'',0,0,0,'','','','','',0,0,0,'','',{DateTime.Now.ToString("HHmmss") + DateTime.Now.ToString("ddMMyy")},'{MachineID}-C#','{System.Environment.MachineName}',{MovlpIDrecord})";
+                    qry = $@"INSERT INTO RZPALI.MCOVIP values({Date},{DepratmentId},{WorkCenter},'000{EmployeeId}',{DepratmentId},'{MachineID}','{CatalogNum}','{Shift}',{Oplan},{OADIF},'',0,'',0,0,{timeStart},0,'',0,0,0,'','','','','',0,0,0,'','',{DateTime.Now.ToString("HHmmss") + DateTime.Now.ToString("ddMMyy")},'{MachineID}-C#','{System.Environment.MachineName}',{MovlpIDrecord})";
                     LogWaveClass.LogWave("רשומה חדשה לעובד אחר " + qry);
                     DBS.executeSelectQueryNoParam(qry);
 
@@ -179,7 +179,7 @@ namespace TireManufacturing
         public int CheckOderOADIFfield()
         {           
             string qry = $@"SELECT max(OADIF+1) as OADIF
-                          FROM RZPADALI.MCOVIP
+                          FROM RZPALI.MCOVIP
                            WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} and  OSHIFT='{this.Shift}'";
             LogWaveClass.LogWave(qry);
             DataTable OadifTable = new DataTable();
@@ -207,7 +207,7 @@ namespace TireManufacturing
                 }
                 else //שאילתה דיפולטיבית להעלאת קאונטר ב1
                 {
-                    qry = $@"UPDATE RZPADALI.MCOVIP set OMADE=omade+1,OTIMF={timeStart},OTIMT={timeWeighing} 
+                    qry = $@"UPDATE RZPALI.MCOVIP set OMADE=omade+1,OTIMF={timeStart},OTIMT={timeWeighing} 
                      WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}' and OPRIT='{CatalogNum}'  and oemp='000{EmployeeId}'";
 
                     LogWaveClass.LogWave("העלאת קאונטר ב1 " + qry);
@@ -232,8 +232,8 @@ namespace TireManufacturing
             try
             {
                 string qry = $@"SELECT  OVLNUM    as idRecord,oemp as EmpolyeeID,OTIMF as FromHour,OWRKC as WorkCenter ,OPLAN,OMADE
-                          FROM RZPADALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
-                          WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}'  and  right(TRIM(IDRAW),9)='{SpecificationChosen}' and OEMP='000{EmployeeId}";
+                          FROM RZPALI.MCOVIP JOIN BPCSFV30.IIML01 ON OPRIT = IPROD   
+                          WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}'  and  right(TRIM(IDRAW),9)='{SpecificationChosen}' and OEMP='000{EmployeeId}'";
                 LogWaveClass.LogWave("שליפת כרטיס עבודה " + qry);
                 DataTable dataTableemployee = DBS.executeSelectQueryNoParam(qry);
                 if(dataTableemployee.Rows.Count==0)
@@ -248,10 +248,10 @@ namespace TireManufacturing
                 }
                 else
                 {
-                    qry = $@"UPDATE RZPADALI.MCOVIP set OMADE=omade+1,OTIMF={timeStart},OTIMT={timeWeighing} 
+                    qry = $@"UPDATE RZPALI.MCOVIP set OMADE=omade+1,OTIMF={timeStart},OTIMT={timeWeighing} 
                      WHERE ODATE={Date} AND OMACH = '{MachineID}' AND ODEPW ={this.DepratmentId} AND OSHIFT = '{Shift}' and OPRIT='{CatalogNum}'  and oemp='000{EmployeeId}'";
                     LogWaveClass.LogWave("רשומה חדשה לעובד אחר עדכון" + qry);
-                    DBS.executeSelectQueryNoParam(qry);
+                    DBS.executeInsertQuery(qry);
                 }
             }
              catch(Exception ex)

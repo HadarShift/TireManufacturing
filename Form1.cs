@@ -39,6 +39,7 @@ namespace TireManufacturing
   
             try
             {
+
                 LogWaveClass.LogWave("אפליקציה התחילה");
                 InitializeComponent();
                 LogWaveClass.LogWave("אפליקציה הועלתה");
@@ -60,6 +61,7 @@ namespace TireManufacturing
                     Btn_StopReason.BackColor = Color.OrangeRed;
                 }
                 CreatedWorkTicket = false;
+                
             }
 
             catch (Exception ex)
@@ -1000,7 +1002,7 @@ namespace TireManufacturing
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            Process_Scale(169);
+            Process_Scale(236);
         }
         private void button1_Click(object sender, EventArgs e)
         {
