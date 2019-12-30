@@ -255,8 +255,8 @@ namespace TireManufacturing
             //       case when substring(b.ICPPGL,1,1)=1 then substring(b.ICPPGL,1,1)  else ' ' end as lenght
             //       ,case when substring(b.ICPPGL,1,2)=1 then substring(b.ICPPGL,2,1)  else ' ' end as width,
             //       case when substring(b.ICPPGL,1,3)=1 then substring(b.ICPPGL,3,1) else ' ' end as WidthCombined
-            //       FROM TAPIDALI.LABMBMP left outer join BPCSFV30.IIML01 a on (bchld = IPROD) left outer join BPCSFV30.IICL01 b on (a.ICLAS = b.ICLAS) 
-            //       WHERE BVLNUM = (select max(bvlnum) from TAPIDALI.LABMBMP where BPROD = '{CatalogNum}' And BQREQ <> 0) And BQREQ <> 0 and trim(b.ICTAX)='1' 
+            //       FROM TAPIALI.LABMBMP left outer join BPCSFV30.IIML01 a on (bchld = IPROD) left outer join BPCSFV30.IICL01 b on (a.ICLAS = b.ICLAS) 
+            //       WHERE BVLNUM = (select max(bvlnum) from TAPIALI.LABMBMP where BPROD = '{CatalogNum}' And BQREQ <> 0) And BQREQ <> 0 and trim(b.ICTAX)='1' 
             //       ORDER BY bseq";
             string query = $@"select '' as bvlnum,bseq,bprod,bchld,trim(IDESC) as IDESC,round(bqreq,1) as bqreq,IUMS,a.ICLAS,trim(ICDES) as ICDES,ICALP2 As sidra,trim(ICALC2) As SHKILA,case when iums='GL' then ' ' else b.ICPPGL end as Param,
                               case when substring(b.ICPPGL,1,1)=1 then substring(b.ICPPGL,1,1)  else ' ' end as lenght
@@ -554,7 +554,7 @@ namespace TireManufacturing
         {
             LogWaveClass.LogWave("selfInspection.CheckBMixture start");
             DataTable CheckBTable = new DataTable();
-            string qry = $@"SELECT LNID,LNSTT,LNEXDT from BPCSDALI.ILNF where LNPROD='{ComponentBarCode}' and LNLOT='{SerialNum}'";
+            string qry = $@"SELECT LNID,LNSTT,LNEXDT from BPCSFALI.ILNF where LNPROD='{ComponentBarCode}' and LNLOT='{SerialNum}'";
             CheckBTable = DBSs.executeSelectQueryNoParam(qry);
             if(CheckBTable.Rows.Count==0)
             {
@@ -696,7 +696,7 @@ namespace TireManufacturing
                 DataTable dataTable = new DataTable();
                 //בודק אם קיימת רשומה בטבלת הצ'ק בוקס כי יש שם רשומה אחת בלבד לכל טופס בקרה
                 string qry = $@"SELECT *
-                           FROM TAPIDALI.BLDCHKH 
+                           FROM TAPIALI.BLDCHKH 
                            WHERE  BHDTE={Date} and BHSHF='{Shift}' and BHDEP={GeneralDetails.DepratmentId} and BHEMP='000{GeneralDetails.EmployeeId}' and BHMAC='{GeneralDetails.MachineID}'  and BHBLD='{CatalogNum}' ";
                 dataTable = DBSs.executeSelectQueryNoParam(qry);
                 //יצירת רשומה חדשה 
@@ -717,7 +717,7 @@ namespace TireManufacturing
                             ForQueryByLevel = "'1','0','0','0','0','0','1','1'";
                             break;
                     }
-                    qry = $@"INSERT into TAPIDALI.BLDCHKH values({Date},{DateTime.Now.ToString("HHmmss")},'{Shift}',{GeneralDetails.DepratmentId},'{GeneralDetails.MachineID}','000{GeneralDetails.EmployeeId}','{CatalogNum}',{ForQueryByLevel},'{ManagerId}','{txt_comment.Text}')";
+                    qry = $@"INSERT into TAPIALI.BLDCHKH values({Date},{DateTime.Now.ToString("HHmmss")},'{Shift}',{GeneralDetails.DepratmentId},'{GeneralDetails.MachineID}','000{GeneralDetails.EmployeeId}','{CatalogNum}',{ForQueryByLevel},'{ManagerId}','{txt_comment.Text}')";
                     DBSs.executeInsertQuery(qry);
                     LogWaveClass.LogWave("אחרי שאילתת בקרה עם צ'ק בוקסים");
                     //הכנסה של מדידות רוחב/אורך של רשומות בנים לטבלה השניה
@@ -732,7 +732,7 @@ namespace TireManufacturing
                             double.TryParse(dataGridViewTireComponent.Rows[i].Cells["width"].Value.ToString(), out Width);
                         if (!string.IsNullOrEmpty(dataGridViewTireComponent.Rows[i].Cells["WidthCombined"].Value.ToString()))
                             double.TryParse(dataGridViewTireComponent.Rows[i].Cells["WidthCombined"].Value.ToString(), out WidthCombined);
-                        qry = $@"INSERT into TAPIDALI.BLDCHKD  values({Date},{DateTime.Now.ToString("HHmmss")},'{Shift}',{GeneralDetails.DepratmentId},'{GeneralDetails.MachineID}','000{GeneralDetails.EmployeeId}','{CatalogNum}',
+                        qry = $@"INSERT into TAPIALI.BLDCHKD  values({Date},{DateTime.Now.ToString("HHmmss")},'{Shift}',{GeneralDetails.DepratmentId},'{GeneralDetails.MachineID}','000{GeneralDetails.EmployeeId}','{CatalogNum}',
                           '{dataGridViewTireComponent.Rows[i].Cells["bchld"].Value.ToString()}',{dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString()},{Lenght},{Width},{WidthCombined}) ";
                         DBSs.executeInsertQuery(qry);
                     }
@@ -746,7 +746,7 @@ namespace TireManufacturing
                     {
                         if (ManagerConfirm)
                             ManagerId = txt_Manager.Text;
-                        qry = $@"UPDATE TAPIDALI.BLDCHKH set BHMNG='{ManagerId}' , BHCMT='{txt_comment.Text}' WHERE  BHDTE={Date} and BHSHF ='{Shift}' and BHDEP={GeneralDetails.DepratmentId} and BHEMP='000{GeneralDetails.EmployeeId}' and BHMAC='{GeneralDetails.MachineID}'  and BHBLD='{CatalogNum}'";
+                        qry = $@"UPDATE TAPIALI.BLDCHKH set BHMNG='{ManagerId}' , BHCMT='{txt_comment.Text}' WHERE  BHDTE={Date} and BHSHF ='{Shift}' and BHDEP={GeneralDetails.DepratmentId} and BHEMP='000{GeneralDetails.EmployeeId}' and BHMAC='{GeneralDetails.MachineID}'  and BHBLD='{CatalogNum}'";
                         DBSs.executeInsertQuery(qry);
                     }
                     LogWaveClass.LogWave(" עדכן רשומה כאשר מנהל אישר");

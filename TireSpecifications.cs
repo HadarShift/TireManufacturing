@@ -64,7 +64,7 @@ namespace TireManufacturing
             string query =
                 $@"SELECT MF2RTH, INSIZ, MFPRD, MFTVDG, MFWT, MFSTT, MFDPT, MFTOFW, INPR, MFUSER, MFCSCD, MFTSHA, MF2RNG , MRKOD, ZMUSCD, MFCDO1, XTMIXD, WOSDADD1 as emailEng ,MFKOD5||MFTST as Test
                    FROM MFRT.MFRTP 
-                   LEFT JOIN BPCSDALI.IIMNL01 ON INPROD = MFPRD 
+                   LEFT JOIN BPCSFALI.IIMNL01 ON INPROD = MFPRD 
                    LEFT JOIN MFRT.MFRTVP ON MFSZ = MRSZ AND MFNO = MRNO and MFVRN = MRVRN 
                    LEFT JOIN MFRT.ZMFRTP ON ZMCODE = MFCDO1 
                    LEFT JOIN MFRT.XTRUP ON XTCODE = MRKOD 
@@ -178,19 +178,38 @@ namespace TireManufacturing
                left join BPCSFV30.cicl01 G on OPRIT=G.ICPROD and G.ICFAC = 'F1'
                left join BPCSFV30.cicl01 C on BCHLD=C.ICPROD and C.ICFAC = 'F1'
 	           left join BPCSFV30.IIMl01 A on oprit=iprod
-               WHERE OMACH = '{MachineID}' and substr(OPRIT,1,8)= '{CatalogNumber8}'  and substr(A.IDRAW,7,15)='{Specification}' and odate={DateTime.Now.ToString("1yyMMdd")} and oshift='{Shift}' and bchld is not null ";
+               WHERE OMACH = '{MachineID}' and substr(OPRIT,1,8)= '{CatalogNumber8}'  and substr(A.IDRAW,7,15)='{Specification}' and odate={DateTime.Now.ToString("1yyMMdd")} and oshift='{Shift}' and bchld is not null";
+
             }
            
       
             
             LogWaveClass.LogWave("שליפת נתונים מפרט מעץ מוצר " + query);
+
             dataTable = DBS.executeSelectQueryNoParam(query);
-            if (dataTable is null)
+            if (dataTable.Rows.Count==0)
             {
-                MessageBox.Show("מפרט לא תקין,נא לפנות לתפי");
-                return;
+                //ניסיון נוסף לשליפה בלי and bchld is not null
+                if (WhichCase != "שלב א")
+                {
+          
+                    query = $@"SELECT distinct OPRIT as GreenCatalogNum, BCHLD as CaracasCatalogNum, round(G.ICSCP1* 2.2046, 2  ) as WeightLevelLibrot,round(C.ICSCP1* 2.2046, 2  ) as WeightCaracasLibrot,round(C.ICSCP1, 2)as WeightCarcasKg
+                   FROM RZPALI.mcovip 
+                   left join BPCSFV30.MBML01   on OPRIT=BPROD and BCLAC ='L'
+                   left join BPCSFV30.cicl01 G on OPRIT=G.ICPROD and G.ICFAC = 'F1'
+                   left join BPCSFV30.cicl01 C on BCHLD=C.ICPROD and C.ICFAC = 'F1'
+	               left join BPCSFV30.IIMl01 A on oprit=iprod
+                   WHERE OMACH = '{MachineID}' and substr(OPRIT,1,8)= '{CatalogNumber8}'  and substr(A.IDRAW,7,15)='{Specification}' and odate={DateTime.Now.ToString("1yyMMdd")} and oshift='{Shift}' ";
+                   LogWaveClass.LogWave("שליפת נתונים נסיון שני !!!!!! " + query);
+                   dataTable = DBS.executeSelectQueryNoParam(query);
+                }
+                if(dataTable.Rows.Count == 0)
+                {
+                    MessageBox.Show("מפרט לא תקין,נא לפנות לתפי");
+                    return;
+                }                         
             }
-            else if (dataTable.Rows.Count >= 1)
+             if (dataTable.Rows.Count >= 1)
             {
 
                 //FatherProduct = dataTable.Rows[0]["BPROD"].ToString();

@@ -125,7 +125,7 @@
             // 
             this.Txt_Cart.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.Txt_Cart.Font = new System.Drawing.Font("Arial Narrow", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Txt_Cart.Location = new System.Drawing.Point(220, 161);
+            this.Txt_Cart.Location = new System.Drawing.Point(178, 161);
             this.Txt_Cart.MaxLength = 6;
             this.Txt_Cart.Name = "Txt_Cart";
             this.Txt_Cart.Size = new System.Drawing.Size(109, 29);
@@ -138,7 +138,7 @@
             this.label15.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label15.BackColor = System.Drawing.Color.SlateGray;
             this.label15.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label15.Location = new System.Drawing.Point(220, 138);
+            this.label15.Location = new System.Drawing.Point(178, 138);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(109, 24);
             this.label15.TabIndex = 201;
@@ -151,12 +151,13 @@
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.button2.BackColor = System.Drawing.Color.Gainsboro;
             this.button2.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.button2.Location = new System.Drawing.Point(93, 138);
+            this.button2.Location = new System.Drawing.Point(51, 138);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(121, 52);
             this.button2.TabIndex = 200;
             this.button2.Text = "שקילה";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Btn_StopReason
@@ -166,7 +167,7 @@
             this.Btn_StopReason.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_StopReason.Enabled = false;
             this.Btn_StopReason.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.Btn_StopReason.Location = new System.Drawing.Point(250, 254);
+            this.Btn_StopReason.Location = new System.Drawing.Point(208, 254);
             this.Btn_StopReason.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Btn_StopReason.Name = "Btn_StopReason";
             this.Btn_StopReason.Size = new System.Drawing.Size(381, 30);
@@ -180,7 +181,7 @@
             this.groupBox4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.groupBox4.Controls.Add(this.lbl_CurTime);
             this.groupBox4.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(249, 611);
+            this.groupBox4.Location = new System.Drawing.Point(207, 611);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.groupBox4.Size = new System.Drawing.Size(381, 76);
@@ -206,7 +207,7 @@
             this.Btn_Load.BackColor = System.Drawing.Color.Gainsboro;
             this.Btn_Load.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_Load.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.Btn_Load.Location = new System.Drawing.Point(392, 137);
+            this.Btn_Load.Location = new System.Drawing.Point(350, 137);
             this.Btn_Load.Name = "Btn_Load";
             this.Btn_Load.Size = new System.Drawing.Size(111, 67);
             this.Btn_Load.TabIndex = 185;
@@ -218,7 +219,7 @@
             // 
             this.Txt_Emp.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.Txt_Emp.Font = new System.Drawing.Font("Arial Narrow", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Txt_Emp.Location = new System.Drawing.Point(513, 168);
+            this.Txt_Emp.Location = new System.Drawing.Point(471, 168);
             this.Txt_Emp.MaxLength = 5;
             this.Txt_Emp.Name = "Txt_Emp";
             this.Txt_Emp.Size = new System.Drawing.Size(109, 35);
@@ -232,7 +233,7 @@
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label5.BackColor = System.Drawing.Color.SlateGray;
             this.label5.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label5.Location = new System.Drawing.Point(513, 138);
+            this.label5.Location = new System.Drawing.Point(471, 138);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(109, 30);
             this.label5.TabIndex = 194;
@@ -243,7 +244,7 @@
             // 
             this.groupBox5.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.groupBox5.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox5.Location = new System.Drawing.Point(250, 409);
+            this.groupBox5.Location = new System.Drawing.Point(208, 409);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.groupBox5.Size = new System.Drawing.Size(384, 85);
@@ -256,7 +257,7 @@
             this.Lbl_PlanedProduced.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.Lbl_PlanedProduced.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Lbl_PlanedProduced.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.Lbl_PlanedProduced.Location = new System.Drawing.Point(261, 500);
+            this.Lbl_PlanedProduced.Location = new System.Drawing.Point(219, 500);
             this.Lbl_PlanedProduced.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.Lbl_PlanedProduced.Name = "Lbl_PlanedProduced";
             this.Lbl_PlanedProduced.Size = new System.Drawing.Size(369, 108);
@@ -270,7 +271,7 @@
             this.CBox_WorkPlan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CBox_WorkPlan.Font = new System.Drawing.Font("Courier New", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.CBox_WorkPlan.FormattingEnabled = true;
-            this.CBox_WorkPlan.Location = new System.Drawing.Point(640, 174);
+            this.CBox_WorkPlan.Location = new System.Drawing.Point(598, 174);
             this.CBox_WorkPlan.Name = "CBox_WorkPlan";
             this.CBox_WorkPlan.Size = new System.Drawing.Size(162, 30);
             this.CBox_WorkPlan.TabIndex = 182;
@@ -281,7 +282,7 @@
             this.Btn_OpenPDF.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.Btn_OpenPDF.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_OpenPDF.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.Btn_OpenPDF.Location = new System.Drawing.Point(250, 216);
+            this.Btn_OpenPDF.Location = new System.Drawing.Point(208, 216);
             this.Btn_OpenPDF.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.Btn_OpenPDF.Name = "Btn_OpenPDF";
             this.Btn_OpenPDF.Size = new System.Drawing.Size(381, 30);
@@ -296,7 +297,7 @@
             this.Btn_GetWorkPlan.BackColor = System.Drawing.Color.Gainsboro;
             this.Btn_GetWorkPlan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Btn_GetWorkPlan.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.Btn_GetWorkPlan.Location = new System.Drawing.Point(921, 138);
+            this.Btn_GetWorkPlan.Location = new System.Drawing.Point(879, 138);
             this.Btn_GetWorkPlan.Name = "Btn_GetWorkPlan";
             this.Btn_GetWorkPlan.Size = new System.Drawing.Size(111, 67);
             this.Btn_GetWorkPlan.TabIndex = 202;
@@ -310,7 +311,7 @@
             this.gpbSpecData.BackColor = System.Drawing.Color.Silver;
             this.gpbSpecData.Controls.Add(this.flowLayoutPanel1);
             this.gpbSpecData.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpbSpecData.Location = new System.Drawing.Point(637, 334);
+            this.gpbSpecData.Location = new System.Drawing.Point(595, 334);
             this.gpbSpecData.Name = "gpbSpecData";
             this.gpbSpecData.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.gpbSpecData.Size = new System.Drawing.Size(475, 254);
@@ -562,11 +563,11 @@
             this.toolStripStatusLabel8,
             this.toolStripStatusLabel10,
             this.LblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 713);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 665);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.statusStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.statusStrip1.Size = new System.Drawing.Size(1360, 29);
+            this.statusStrip1.Size = new System.Drawing.Size(1276, 29);
             this.statusStrip1.TabIndex = 204;
             this.statusStrip1.Text = "statusStrip";
             // 
@@ -678,7 +679,7 @@
             this.gpbBarCode.Controls.Add(this.lblSerialNum);
             this.gpbBarCode.Controls.Add(this.lblDnaNum);
             this.gpbBarCode.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.gpbBarCode.Location = new System.Drawing.Point(637, 216);
+            this.gpbBarCode.Location = new System.Drawing.Point(595, 216);
             this.gpbBarCode.Name = "gpbBarCode";
             this.gpbBarCode.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.gpbBarCode.Size = new System.Drawing.Size(475, 105);
@@ -749,7 +750,7 @@
             this.Cbo_Level.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Cbo_Level.Font = new System.Drawing.Font("Courier New", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.Cbo_Level.FormattingEnabled = true;
-            this.Cbo_Level.Location = new System.Drawing.Point(640, 137);
+            this.Cbo_Level.Location = new System.Drawing.Point(598, 137);
             this.Cbo_Level.Name = "Cbo_Level";
             this.Cbo_Level.Size = new System.Drawing.Size(162, 30);
             this.Cbo_Level.TabIndex = 210;
@@ -761,7 +762,7 @@
             // 
             this.lbl_MachineWrk.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lbl_MachineWrk.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lbl_MachineWrk.Location = new System.Drawing.Point(1038, 142);
+            this.lbl_MachineWrk.Location = new System.Drawing.Point(996, 142);
             this.lbl_MachineWrk.Name = "lbl_MachineWrk";
             this.lbl_MachineWrk.Size = new System.Drawing.Size(74, 63);
             this.lbl_MachineWrk.TabIndex = 211;
@@ -775,7 +776,7 @@
             this.btn_SelfInspection.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_SelfInspection.Enabled = false;
             this.btn_SelfInspection.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btn_SelfInspection.Location = new System.Drawing.Point(250, 291);
+            this.btn_SelfInspection.Location = new System.Drawing.Point(208, 291);
             this.btn_SelfInspection.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.btn_SelfInspection.Name = "btn_SelfInspection";
             this.btn_SelfInspection.Size = new System.Drawing.Size(381, 30);
@@ -795,7 +796,7 @@
             this.תפריטToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1360, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1276, 28);
             this.menuStrip1.TabIndex = 214;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1024,7 +1025,7 @@
             this.gpbWeight.Controls.Add(this.label4);
             this.gpbWeight.Controls.Add(this.label20);
             this.gpbWeight.Font = new System.Drawing.Font("Arial", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gpbWeight.Location = new System.Drawing.Point(250, 334);
+            this.gpbWeight.Location = new System.Drawing.Point(208, 334);
             this.gpbWeight.Name = "gpbWeight";
             this.gpbWeight.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.gpbWeight.Size = new System.Drawing.Size(381, 160);
@@ -1036,7 +1037,7 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label1.Location = new System.Drawing.Point(806, 173);
+            this.label1.Location = new System.Drawing.Point(764, 173);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 32);
             this.label1.TabIndex = 215;
@@ -1047,7 +1048,7 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label2.Location = new System.Drawing.Point(806, 138);
+            this.label2.Location = new System.Drawing.Point(764, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 32);
             this.label2.TabIndex = 216;
@@ -1058,7 +1059,7 @@
             // 
             this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox2.Image = global::TireManufacturing.Properties.Resources.splash1;
-            this.pictureBox2.Location = new System.Drawing.Point(381, 32);
+            this.pictureBox2.Location = new System.Drawing.Point(339, 32);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(600, 90);
             this.pictureBox2.TabIndex = 213;
@@ -1072,7 +1073,7 @@
             this.pictureBox1.BackgroundImage = global::TireManufacturing.Properties.Resources.ATG_Wallpaper_1440x900;
             this.pictureBox1.Location = new System.Drawing.Point(0, -1);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1969, 127);
+            this.pictureBox1.Size = new System.Drawing.Size(1885, 127);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -1081,7 +1082,7 @@
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.button1.BackColor = System.Drawing.Color.Gainsboro;
             this.button1.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.button1.Location = new System.Drawing.Point(93, 216);
+            this.button1.Location = new System.Drawing.Point(51, 216);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(121, 52);
             this.button1.TabIndex = 217;
@@ -1101,7 +1102,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.ClientSize = new System.Drawing.Size(1360, 742);
+            this.ClientSize = new System.Drawing.Size(1276, 694);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Lbl_PlanedProduced);
             this.Controls.Add(this.label2);

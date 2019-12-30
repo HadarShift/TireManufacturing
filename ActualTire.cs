@@ -83,7 +83,7 @@ namespace TireManufacturing
             CatalogNumMangerConfirm = "";
             string query =
                 $@"SELECT A.LPROD,A.LYYWW,A.LLBLNO,A.LSTT,A.LMACH,A.LDEPT,A.LWRKC,A.LSHIFT,right(trim(A.LSPEC),9) as LSPEC,A.LKGMF,A.LVLNUM,A.LDATE,A.LTIME,A.LICLAS,B.LACTAN,LADESC,B.LKGAC      
-                   FROM TAPIDALI.LABELL1 A left join TAPIDALI.LABELGP B on A.LPROD=B.LPROD  and A.LLBLNO=B.LLBLNO
+                   FROM TAPIALI.LABELL1 A left join TAPIALI.LABELGP B on A.LPROD=B.LPROD  and A.LLBLNO=B.LLBLNO
                    WHERE  A.LLBLNA={Dna} and B.LACTAN in (3, 103) order by B.LACTAN desc";//בדיקת dna ו103-ירוק 3-קרקס
             LogWaveClass.LogWave(query);
             dataTable = DBS.executeSelectQueryNoParam(query);
@@ -148,13 +148,13 @@ namespace TireManufacturing
             if (LevelWorkSerial == "שלב א")
                 query =
                     $@"SELECT A.LPROD,A.LYYWW,A.LLBLNO,A.LSTT,A.LMACH,A.LDEPT,A.LWRKC,A.LSHIFT,right(trim(A.LSPEC),9) as LSPEC,A.LKGMF,A.LVLNUM,A.LDATE,A.LTIME,A.LICLAS, B.LLBLNA
-                   FROM TAPIDALI.LABELL1 A left join TAPIDALI.LABELGP B on A.LPROD=B.LPROD  and A.LLBLNO=B.LLBLNO and B.LACTAN = 3
+                   FROM TAPIALI.LABELL1 A left join TAPIALI.LABELGP B on A.LPROD=B.LPROD  and A.LLBLNO=B.LLBLNO and B.LACTAN = 3
                    WHERE A.LPROD = '{CatalogNum}' AND A.LLBLNO = {SerialNumber}";
 
             else if (LevelWorkSerial == "צמיג מלא" || LevelWorkSerial=="שלב ב")
                 query =
                     $@"SELECT A.LPROD,A.LYYWW,A.LLBLNO,A.LSTT,A.LMACH,A.LDEPT,A.LWRKC,A.LSHIFT,right(trim(A.LSPEC),9) as LSPEC,A.LKGMF,A.LVLNUM,A.LDATE,A.LTIME,A.LICLAS, B.LLBLNA
-                   FROM TAPIDALI.LABELL1 A left join TAPIDALI.LABELGP B on A.LPROD=B.LPROD  and A.LLBLNO=B.LLBLNO and B.LACTAN = 103
+                   FROM TAPIALI.LABELL1 A left join TAPIALI.LABELGP B on A.LPROD=B.LPROD  and A.LLBLNO=B.LLBLNO and B.LACTAN = 103
                    WHERE A.LPROD = '{CatalogNum}' AND A.LLBLNO = {SerialNumber}";
 
 
@@ -194,7 +194,7 @@ namespace TireManufacturing
         {
             DataTable dataTable = new DataTable();
             string query =
-                $@"SELECT COUNT(LPROD) as Count FROM TAPIDALI.LABELGP WHERE LLBLNA ={Dna}";
+                $@"SELECT COUNT(LPROD) as Count FROM TAPIALI.LABELGP WHERE LLBLNA ={Dna}";
             dataTable = DBS.executeSelectQueryNoParam(query);
           //  if (dataTable.Rows.Count == 0)
           //      return false;
@@ -384,7 +384,7 @@ namespace TireManufacturing
                 try
                 {
                     //שידור שקילה בלוג שקילות            
-                    InsertQry = $@"INSERT INTO TSTMJD.PRRP values('{MachineID}','{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}','00{EmployeeId}0','{CatalogNum}','{tireSpecifications.Size}','{SerialNumber}',{tireSpecifications.TireWeight},{WeightGreenTire},{tireSpecifications.CarcasWeight},{WeightKarkas},0,0,0,'','','','','{Specifications}')";
+                    InsertQry = $@"INSERT INTO STWIND.PRRP values('{MachineID}','{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}','00{EmployeeId}0','{CatalogNum}','{tireSpecifications.Size}','{SerialNumber}',{tireSpecifications.TireWeight},{WeightGreenTire},{tireSpecifications.CarcasWeight},{WeightKarkas},0,0,0,'','','','','{Specifications}')";
                     LogWaveClass.LogWave(InsertQry);
                     if (DnaMangerConfirm == 0)//אם זה בא מהמנהל אישור קרקס ללא שקילה לא משדר לPRRP
                         DBS.executeInsertQuery(InsertQry);
@@ -400,7 +400,7 @@ namespace TireManufacturing
                 {
                     //עדכון טבלת כותרות תוויות רשומת LNSTT ל3 
                     //קישור DNA לתווית            
-                    InsertQry = $@"UPDATE  TAPIDALI.LABELP set LSTT=3,LLBLNA={Dna},LKGAC={Math.Round(Weight / 2.2046, 3)},LSTTDT={Date},LSTTTM={time} Where LPROD='{CatalogNum}' and LLBLNO={SerialNumber} ";
+                    InsertQry = $@"UPDATE  TAPIALI.LABELP set LSTT=3,LLBLNA={Dna},LKGAC={Math.Round(Weight / 2.2046, 3)},LSTTDT={Date},LSTTTM={time} Where LPROD='{CatalogNum}' and LLBLNO={SerialNumber} ";
                     DBS.executeInsertQuery(InsertQry);
                     LogWaveClass.LogWave("4" + InsertQry);
                 }
@@ -415,7 +415,7 @@ namespace TireManufacturing
                 {
                     //שידור לקובץ תוויות לוג
                     //יש יותר פרטים בקובץ לוג בגלל זה מעדכנים גם בלוג וגם בPRRP
-                    InsertQry = $@"SELECT MAX(LLOGNO) as max FROM TAPIDALI.LABELGP";//שליפת מספר רץ אחרון 
+                    InsertQry = $@"SELECT MAX(LLOGNO) as max FROM TAPIALI.LABELGP";//שליפת מספר רץ אחרון 
                     
                     LogWaveClass.LogWave(" שליפת מספר רץ אחרון עבור LABELGPלפני  " + InsertQry);
                     dataTable = DBS.executeSelectQueryNoParam(InsertQry);
@@ -433,7 +433,7 @@ namespace TireManufacturing
                 {
                     //לפני הכנסה לטבלת לוג תוויות ללוקח שדות רלוונטים מתוך טבלת כותרות תוויות
                     InsertQry = $@"SELECT  LYYWW as WeekYear ,LVLNUM,LWRKC as WorkCenter,LPRODA as FatherProduct,left(TRIM(LSPEC),1) as PrefixSpecification,LICLAS as ItemType,LSPEC as Specification
-                         FROM TAPIDALI.LABELP
+                         FROM TAPIALI.LABELP
                          Where LPROD='{CatalogNum}' and LLBLNO={SerialNumber}";
                     LogWaveClass.LogWave("לפני שליפת נתונים עבור LABELGP   " + InsertQry);
 
@@ -489,7 +489,7 @@ namespace TireManufacturing
                 //הכנסה לקובץ לוג תוויות
                 void InsertToLogLabel()
                 {
-                    InsertQry = $@"Insert into TAPIDALI.LABELGP values('{CatalogNum}',{WeekOfTheYear},{SerialNumber},'{MachineID}',{Date},{time},{NumRun},{LevelNum},'','','','{Description}',{DepratmentId}
+                    InsertQry = $@"Insert into TAPIALI.LABELGP values('{CatalogNum}',{WeekOfTheYear},{SerialNumber},'{MachineID}',{Date},{time},{NumRun},{LevelNum},'','','','{Description}',{DepratmentId}
                            ,{WorkCenter},{Shift},'{SpecificationFromAS400}','','{PrefixSpecification}','{tireSpecifications.SubstringsSpecifications[0]}','{tireSpecifications.SubstringsSpecifications[1]}','{tireSpecifications.SubstringsSpecifications[2]}',
                             '   {EmployeeId}','{ItemType}',{WeightSpecification / 2.2046},{Weight / 2.2046},'{LERRCD}','{LERRDS}','2',{LVLNUM},{Date},{time},'{tireSpecifications.FatherProduct}',0,{Dna},{Date},{time},'{MachineID}',
                             '{LWSID}','{DnaWithLetter}','',{Date},{time},'{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}','{LACCPT}')";
@@ -543,7 +543,7 @@ namespace TireManufacturing
                 //הכנסת רשומת רכיב
                 void InsertComponent(string FromWhere)
                 {
-                    qry = $@"INSERT into BPCSDALI.MBMG values('{CatalogNum}','{DnaWithLetter}',1,'{CatalogNumSon}','{SerialNumberSon}',{Quantity},'{MachineID}',{WorkCenter},{DepratmentId},'000{EmployeeId}',{DateTime.Now.ToString("yyMMdd")},{DateTime.Now.ToString("HHmmss")},
+                    qry = $@"INSERT into BPCSFALI.MBMG values('{CatalogNum}','{DnaWithLetter}',1,'{CatalogNumSon}','{SerialNumberSon}',{Quantity},'{MachineID}',{WorkCenter},{DepratmentId},'000{EmployeeId}',{DateTime.Now.ToString("yyMMdd")},{DateTime.Now.ToString("HHmmss")},
                         '{Shift}','{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}','C#','{System.Environment.MachineName}','','','',0,0,0)";
                     LogWaveClass.LogWave(FromWhere + " " + qry);
                     DBS.executeInsertQuery(qry);
@@ -567,7 +567,7 @@ namespace TireManufacturing
         public DataTable MakeReportForEmployee(int EmployeeNumReport, DateTime dateTime)
         {
             string qry = $@"SELECT LPROD as CatalogNum ,SUBSTR(CHAR(LACNDT), 7, 2) Concat '/' Concat SUBSTR(CHAR(LACNDT), 5, 2) Concat '/' Concat SUBSTR(CHAR(LACNDT), 1, 4) as Date,SUBSTR(CHAR(RIGHT('0000000'||LACNTM,6)), 1, 2) Concat ':' Concat SUBSTR(CHAR(RIGHT('0000000'||LACNTM,6)), 3, 2) Concat ':' Concat SUBSTR(CHAR(RIGHT('0000000'||LACNTM,6)), 5, 2) as Time ,LSPEC as Specification,LKGAC as WeightActual,LKGMF as WeightSpec,(LKGAC/LKGMF -1) as Deviation,LMNGID as Dna,LLBLNO as SerialNum
-                          FROM TAPIDALI.LABELGP
+                          FROM TAPIALI.LABELGP
                           WHERE trim(LOVED)='{EmployeeNumReport}' and LACNDT||RIGHT('000000'||LACNTM,6) between {dateTime.AddDays(-1).ToString("yyyyMMdd233000")} and {dateTime.ToString("yyyyMMdd232959")} and LACTAN in (3,103)";
             DataTable dataTable = new DataTable();
             dataTable = DBS.executeSelectQueryNoParam(qry);

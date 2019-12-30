@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO.Ports;
 using System.Text.RegularExpressions;
-using System.Configuration;
+using System.Threading;
+using System.Windows.Forms;
+using OPCAutomation;
 
 namespace TireManufacturing
 {
@@ -33,13 +29,11 @@ namespace TireManufacturing
         BeforeReleaseVersion beforeReleaseVersion = new BeforeReleaseVersion();//התראה לפני סגירת תוכנית לשם עדכון
         bool beforeReleaseVersionExist=false;//יכול להיות שפתוח כבר החלון
         //static bool CreatedWorkTicket = false;//האם נפתח כרטיס עבודה לעובד שהמשיך לעבוד אחרי החלפת משמרת על אותו מפרט
-        public static bool CreatedWorkTicket { get; set; }//האם נפתח כרטיס עבודה לעובד שהמשיך לעבוד אחרי החלפת משמרת על אותו מפרט
         public Form1()
         {
   
             try
             {
-
                 LogWaveClass.LogWave("אפליקציה התחילה");
                 InitializeComponent();
                 LogWaveClass.LogWave("אפליקציה הועלתה");
@@ -47,7 +41,7 @@ namespace TireManufacturing
                 //txtDNA.Text = "905055";
                 //txtSerial.Text = "38022999-100  S205783";
                 //List<string> ListWorkPlan = new List<string>();//רשימת סטרינגים עבור תוכנית עבודה
-                
+
                 GetWorkPlan();//תוכנית עבודה
                 LogWaveClass.LogWave("קיבל תוכנית עבודה");
                 ShowStart();//תצוגה התחלתית
@@ -60,7 +54,6 @@ namespace TireManufacturing
                     Btn_StopReason.Text = stopReason.DescriptionStop;
                     Btn_StopReason.BackColor = Color.OrangeRed;
                 }
-                CreatedWorkTicket = false;
                 
             }
 
@@ -1369,56 +1362,8 @@ namespace TireManufacturing
 
         }
 
-        private void Kepwere()
-        {
-            //חיבור לשרת
-            // Kepware.ClientAce.OpcDaClient.DaServerMgt DAserver = new
-            // Kepware.ClientAce.OpcDaClient.DaServerMgt();
-            // Kepware.ClientAce.OpcDaClient.ConnectInfo connectInfo = new
-            //Kepware.ClientAce.OpcDaClient.ConnectInfo();
-            // bool connectFailed;
-            // int activeServerSubscriptionHandle;
-            // int clientSubscriptionHandle;
-            // ItemIdentifier[] itemIdentifiers = new ItemIdentifier[5];
 
-            // הגדרות לחיבור של אובייקטים בשרת(בקר)
-            // // Define the server connection URL
-            //                 string url = "opcda://localhost/Kepware.KEPServerEX.V5/{B3AF0BF6-4C0C-4804-A122-
-            //     6F3B160F4397}";
-
-            //     // Initialize the connect info object data
-            //     connectInfo.LocalId = "en";
-            //     connectInfo.KeepAliveTime = 1000;
-            //     connectInfo.RetryAfterConnectionError = true;
-            //     connectinfo.RetryInitialConnection = false;
-            //     connectInfo.ClientName = "CS Simple Client";
-            //     connectFailed = false;
-            //     ///define a client handle for the connection
-            //     /int clientHandle = 1;
-
-            //
-
-            //נסיון התחברות
-            //Try to connect with the API connect method:
-            //try
-            //{
-            //    DAserver.Connect(url, clientHandle, ref connectInfo, out connectFailed);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Handled Connect exception. Reason: " + ex.Message);
-            //    // Make sure following code knows connection failed:
-            //    connectFailed = true;
-            //}
-            //// Handle result:
-            //if (connectFailed)
-            //{
-            //    // Tell user connection attempt failed:
-            //    MessageBox.Show("Connect failed");
-            //}
-            ////Subscribe to events
-            //SubscribeToOPCDAServerEvents();
-        }
+   
 
     }
 }

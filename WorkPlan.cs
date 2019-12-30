@@ -148,7 +148,6 @@ namespace TireManufacturing
                     LogWaveClass.LogWave("רשומה חדשה לעובד אחר " + qry);
                     DBS.executeSelectQueryNoParam(qry);
 
-                    Form1.CreatedWorkTicket = false;
                     LogWaveClass.LogWave("סיום checkIfTheSameEmployee "+qry);
                 }
             }
@@ -244,7 +243,6 @@ namespace TireManufacturing
                     qry = $@"INSERT INTO RZPALI.MCOVIP values({Date},{DepratmentId},{WorkCenter},'000{EmployeeId}',{DepratmentId},'{MachineID}','{CatalogNum}','{Shift}',0,{OADIF},'',0,'',1,0,{timeStart},0,'',0,0,0,'','','','','',0,0,0,'','',{DateTime.Now.ToString("HHmmss") + DateTime.Now.ToString("ddMMyy")},'{MachineID}-C#','{System.Environment.MachineName}',{MovlpIDrecord+1})";//oplan=0 omade=1  oplan between shift and oadif omade-.2 fields before timestart
                     LogWaveClass.LogWave("רשומה חדשה לעובד אחר " + qry);
                     DBS.executeSelectQueryNoParam(qry);
-                    Form1.CreatedWorkTicket = true;
                 }
                 else
                 {
