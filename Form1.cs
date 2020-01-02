@@ -155,7 +155,7 @@ namespace TireManufacturing
 
            
 
-                    LogWaveClass.LogWave("מפרט הוטען");
+                    LogWaveClass.LogWave(" מפרט הוטען"+ Cbo_Level.Text);
                     //בדיקה כמה מוכנים               
                     workPlan.ReadyTires(CBox_WorkPlan.SelectedIndex,CBox_WorkPlan.Text);//שולח את מיקום המפרט עליו אנחנו נרצה לעבוד
                     Lbl_PlanedProduced.Text = workPlan.HowManyPlanned + " // " + workPlan.HowManyReady;
