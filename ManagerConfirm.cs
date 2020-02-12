@@ -15,7 +15,7 @@ namespace TireManufacturing
     /// </summary>
     public partial class ManagerConfirm : Form
     {
-        List<int> Managers = new List<int>();
+        List<string> Managers = new List<string>();
         public bool TheMangerNumExist { get; set; }
         public int Dna { get; set; }
         public string DnaWithLetter { get; set; }
@@ -24,12 +24,12 @@ namespace TireManufacturing
         public string CatalogNum { get; set; }
 
         ActualTire A = new ActualTire();
-        public int ManagerId { get; set; }//מספר מנהל מאשר
+        public string ManagerId { get; set; }//מספר מנהל מאשר
 
         /// <summary>
         /// אישור מנהל שהתווית לא עברה שקיל
         /// </summary>
-        public ManagerConfirm(List<int> Manager, string catalognum,string DnaWithLetter,string Specification)
+        public ManagerConfirm(List<string> Manager, string catalognum,string DnaWithLetter,string Specification)
         {
             InitializeComponent();
             this.Managers = Manager;
@@ -49,14 +49,14 @@ namespace TireManufacturing
             if (string.IsNullOrEmpty(txt_id_manager.Text)) return;
             try
             {
-                if (!(Managers.Contains(int.Parse(txt_id_manager.Text))))
+                if (!(Managers.Contains(txt_id_manager.Text)))
                 {
                     MessageBox.Show("לא קיים מנהל עם מספר עובד זה");
                     return;
                 }
                 else
                 {
-                    ManagerId = int.Parse(txt_id_manager.Text);
+                    ManagerId = txt_id_manager.Text;
                     gpo_ManagerConfirm1.Visible = false;
                     int x = Convert.ToInt32((this.Size.Width) * 0.07);
                     int y = Convert.ToInt32((this.Size.Height) * 0.07);

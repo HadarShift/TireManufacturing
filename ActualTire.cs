@@ -34,11 +34,11 @@ namespace TireManufacturing
         public int Shift { get; set; }
         //אישור מנהל
         public string WhichCase { get; set; }//איזה שלב אנחנו שוקלים עכשיו
-        public List<int> Managers { get; set; }//רשימת מנהלים מאשרים
+        public List<string> Managers { get; set; }//רשימת מנהלים מאשרים
         public int DnaMangerConfirm { get; set; }//ניקח מתוך פורם מנהל מאשר
         public string DnaMangerConfirmWithLetter { get; set; }//ניקח מתוך פורם מנהל מאשר
 
-        public int ManagerID { get; set; }//מי המנהל שאישר כרכס בלי שקילה
+        public string ManagerID { get; set; }//מי המנהל שאישר כרכס בלי שקילה
         public string CatalogNumMangerConfirm { get; set; }//ניקח מתוך פורם מנהל מאשר
         public int SerialNumMangerConfirm { get; set; }//ניקח מתוך פורם מנהל מאשר
 
@@ -60,7 +60,7 @@ namespace TireManufacturing
         /// <summary>
         /// בנאי של סבב חדש לפני שקילה חדשה
         /// </summary>
-        public ActualTire(int EmpNo,string Specification, List<int> Managers,string CatalogNum,string LevelWork):this()
+        public ActualTire(int EmpNo,string Specification, List<string> Managers,string CatalogNum,string LevelWork):this()
         {
             this.EmployeeId = EmpNo;
             this.Specifications = Specification;
@@ -301,7 +301,7 @@ namespace TireManufacturing
         /// </summary>
         public void CheckIFSmsDeviation(double ActualWeight, double deviation, string WhichCase)
         {
-            string SMS = $@"Deviation in tire weight - T- {MachineID} Department {DepratmentId} .Cat. {CatalogNum} ,DNA {Dna} deviation {deviation} tire No. {TireCode}";
+            string SMS = $@"Deviation in tire weight - T- {MachineID} Department {DepratmentId} .Cat. {CatalogNum} ,DNA {Dna} deviation {Math.Round(deviation,1)} tire No. {TireCode}";
             SendSms = false;
             //אלה התנאים מתי שתשלח הודעה למנהלים
             if (deviation < -3.5)
@@ -351,7 +351,7 @@ namespace TireManufacturing
                 string WeekOfTheYear = "0", Description = "", LVLNUM = "0", FatherProduct = "", PrefixSpecification = "", SpecificationFromAS400 = "", ItemType = "";
                 long NumRun = 0;
                 //שדות עבור אישור מנהל
-                int LWSID = 0;
+                string LWSID = "0";
                 char LERRDS = ' ', LERRCD = ' ';
                 //בשליחת הודעה על חריגת משקל
                 char LACCPT = ' ';
@@ -366,7 +366,7 @@ namespace TireManufacturing
 
 
                     //אישור מנהל-כרכס בלי שקילה
-                    if (ManagerID != 0 && LevelWork == "שלב ב")
+                    if (ManagerID != "0" && LevelWork == "שלב ב")
                     {
                         LWSID = ManagerID;
                         LERRDS = '1';

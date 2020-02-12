@@ -20,7 +20,7 @@ namespace TireManufacturing
         static FormStopReason stopReason = new FormStopReason(machine.AS400User, machine.AS400Pass);//שולח רשימת סיבות עצירה
         SelfInspection selfInspection;
         ActualTire actualTire= new ActualTire();//אובייקט נתוני גלגל בפועל כולל dna 
-         List<int> Managers = new List<int>();//רשימת מנהלים מאשרים
+         List<string> Managers = new List<string>();//רשימת מנהלים מאשרים
         int PreviousEmployeeSelfInspection;//העובד הקודם שעשה בקרה עצמית
         string PreviousSpecificationSelfInspection;//מפרט קודם עבור בקרה עצמית-בשביל לבדוק אם מהתחלה או לא
         DataTable dataTableWorkPlan = new DataTable();//תוכנית עבודה                     
@@ -99,7 +99,7 @@ namespace TireManufacturing
             dataTable = dbServiceSQL.executeSelectQueryNoParam(query);
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                Managers.Add(int.Parse(dataTable.Rows[i]["Manager_Code"].ToString()));
+                Managers.Add(dataTable.Rows[i]["Manager_Code"].ToString());
             }
         }
 
@@ -218,6 +218,8 @@ namespace TireManufacturing
                     LogWaveClass.LogWave("סיים workPlan.CheckIfTheSameEmployee");
                     LogWaveClass.LogWave("בא לשים תמונת עיגול ירוק כסטטוס פעיל");
                     LblStatus.Image = new Bitmap(@"\\nas84bk\pub_dep\Application\C#\TireManufacturing\green.jpg");//סימן ירוק בסטטוס
+
+                    LoadToControllers();
 
                     //נעילת שדות
                     CBox_WorkPlan.Enabled = false;
@@ -1363,7 +1365,12 @@ namespace TireManufacturing
         }
 
 
-   
+        //טעינה לבקרים
+        private void LoadToControllers()
+        {
+              
+        }
+
 
     }
 }

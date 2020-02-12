@@ -52,6 +52,7 @@ namespace TireManufacturing
         public TireSpecifications()
         {
             LogWaveClass.LogWave("יצר אובייקט TireSpecifications");
+            
         }
 
         

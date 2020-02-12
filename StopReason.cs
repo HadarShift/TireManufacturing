@@ -76,18 +76,19 @@ namespace TireManufacturing
             LogWaveClass.LogWave(qry);
             DBS.executeInsertQuery(qry);
 
-            if (CodeStop != "95")//אם באמת הוכנסה תקלה שהיא לא קוד תקלה 95 של סיום תקלה
-            {
-                    //הכנסה לקובץ לוג עצירות-קובץ תיעוד של כל היסטוריית העצירות
-                    qry = $@"INSERT into RZPALI.HMIBMACLOG values('{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','{stopReasonClass.MachineID}','4','{stopReasonClass.EmployeeId}','{CodeStop}','{stopReasonClass.CatalogNum}',0,'{stopReasonClass.MachineID}')";
-                    LogWaveClass.LogWave("מכניס לקובץ תקלות לוג " + qry);
+            //if (CodeStop != "95")//אם באמת הוכנסה תקלה שהיא לא קוד תקלה 95 של סיום תקלה
+            //{
+            //הכנסה לקובץ לוג עצירות-קובץ תיעוד של כל היסטוריית העצירות
+            qry = $@"INSERT into RZPALI.HMIBMACLOG values('{DateTime.Now.ToString("yyyy-MM-dd-HH.mm.ss.000000")}',{stopReasonClass.DepratmentId},'{stopReasonClass.MachineID}','{stopReasonClass.MachineID}','4','{stopReasonClass.EmployeeId}','{CodeStop}','{stopReasonClass.CatalogNum}',0,'{stopReasonClass.MachineID}')";
+            LogWaveClass.LogWave("מכניס לקובץ תקלות לוג " + qry);
 
-                    DBS.executeInsertQuery(qry);
-                    stopReasonClass.TimeStartStop = DateTime.Now.ToString("HHmm");//זמן עדכון תקלה
-            }
+            DBS.executeInsertQuery(qry);
+            stopReasonClass.TimeStartStop = DateTime.Now.ToString("HHmm");//זמן עדכון תקלה
+                                                                          //}
 
             //לחץ על סיום תקלה ואז מעדכנים סיום תקלה בקובץ STOPP
-            else
+            //else
+            if (CodeStop == "95")
             {
                 //CheckIFStopExist();//אם כבר מדווח עצירת תקלה אז לא צריך לדווח שוב 
                 if (ExistStop)//רק אם יש באמת קוד תקלה אז נדווח עצירה בקובץ STOPP

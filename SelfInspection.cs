@@ -29,7 +29,7 @@ namespace TireManufacturing
         public int Shift { get; set; }
         public string Department { get; set; }
 
-        List<int> Managers = new List<int>();//רשימת מנהלים מאשרים
+        List<string> Managers = new List<string>();//רשימת מנהלים מאשרים
         public enum ColorSelfInspection { red,yellow,green};//צבע נוכחי עבור סטטוס בקרה עצמית
         public ColorSelfInspection colorSelfInspection { get; set; }
 
@@ -59,7 +59,7 @@ namespace TireManufacturing
         SqlParameter Emp_No;
         SqlParameter Building_Stage;
 
-        public SelfInspection(string CatalogNum, string LevelWork,string Specification, List<int> Managers,int EmpolyeeId,int Shift,int PreviousEmployeeSelfInspection,string PreviousSpecificationSelfInspection, string AS400User, string AS400Pass )
+        public SelfInspection(string CatalogNum, string LevelWork,string Specification, List<string> Managers,int EmpolyeeId,int Shift,int PreviousEmployeeSelfInspection,string PreviousSpecificationSelfInspection, string AS400User, string AS400Pass )
         {
             try
             {
@@ -587,14 +587,13 @@ namespace TireManufacturing
         private bool CheckManger(string text)
         {
             bool Check = false;
-            bool isNumeric = int.TryParse(text, out int n);
-            if (isNumeric)
+            if (text != "")
             {
-                if (Managers.Contains(n))//מתוך טבלת מנהלים
+                if (Managers.Contains(text))//מתוך טבלת מנהלים
                     Check = true;
                 else
                     MessageBox.Show("מספר מנהל לא קיים", "הודעת שגיאה", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-            }
+            }                
             return Check;
         }
 
@@ -1127,31 +1126,33 @@ namespace TireManufacturing
 
         private void txt_Manager_Leave(object sender, EventArgs e)
         {
-            try
-            {
-                ManagerConfirm = CheckManger(txt_Manager.Text);//בדיקה אם מנהל אישר
-                if (ManagerConfirm)
-                {
-                    for (int i = 0; i < dataGridViewTireComponent.RowCount; i++)
-                    {
-                        if (TireComponenetsdataTable.Rows[i]["ICLAS"].ToString().Substring(0, 1) == "B")//אם יש תערובת לא מאושרת ידלג על לשים אוטומטי מספר סידרורי בעקבות אישור מנהל
-                        {
-                            bool Check=CheckBMixture();
-                            if (!Check)
-                                continue;
-                        }
+            //try
+            //{
+            //    ManagerConfirm = CheckManger(txt_Manager.Text);//בדיקה אם מנהל אישר
+            //    if (ManagerConfirm)
+            //    {
+            //        for (int i = 0; i < dataGridViewTireComponent.RowCount; i++)
+            //        {
+            //            if (TireComponenetsdataTable.Rows[i]["ICLAS"].ToString().Substring(0, 1) == "B")//אם יש תערובת לא מאושרת ידלג על לשים אוטומטי מספר סידרורי בעקבות אישור מנהל
+            //            {
+            //                bool Check=CheckBMixture();
+            //                if (!Check)
+            //                    continue;
+            //            }
                          
-                        if (dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString() == "" || dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString() == "0")
-                            dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value = 999999;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                LogWaveClass.ErrorLogWave("Error: " + ex.Message);
-            }
+            //            if (dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString() == "" || dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString() == "0")
+            //                dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value = 999999;
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //    LogWaveClass.ErrorLogWave("Error: " + ex.Message);
+            //}
         }
+
+
 
         /// <summary>
         /// דיווח פסולות
@@ -1239,6 +1240,46 @@ namespace TireManufacturing
         private void txt_Manager_KeyPress(object sender, KeyPressEventArgs e)
         {
             txt_Manager.PasswordChar = '*';
+            if (e.KeyChar == (char)13)
+            {
+                if (txt_Manager.Text == null)
+                {
+                    MessageBox.Show(
+                        "הכנס קוד מנהל",
+                        "Alliance Tire Manufacturing",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error,
+                        MessageBoxDefaultButton.Button1,
+                        (MessageBoxOptions)0x40000);
+                    return;
+                }
+                try
+                {
+                    ManagerConfirm = CheckManger(txt_Manager.Text);//בדיקה אם מנהל אישר
+                    if (ManagerConfirm)
+                    {
+                        for (int i = 0; i < dataGridViewTireComponent.RowCount; i++)
+                        {
+                            if (TireComponenetsdataTable.Rows[i]["ICLAS"].ToString().Substring(0, 1) == "B")//אם יש תערובת לא מאושרת ידלג על לשים אוטומטי מספר סידרורי בעקבות אישור מנהל
+                            {
+                                bool Check = CheckBMixture();
+                                if (!Check)
+                                    continue;
+                            }
+
+                            if (dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString() == "" || dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value.ToString() == "0")
+                                dataGridViewTireComponent.Rows[i].Cells["סידורי"].Value = 999999;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    LogWaveClass.ErrorLogWave("Error: " + ex.Message);
+                }
+
+            }
         }
+
     }
 }
